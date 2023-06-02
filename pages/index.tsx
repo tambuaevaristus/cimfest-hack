@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Dashboard = () => {
@@ -9,28 +10,28 @@ const Dashboard = () => {
         </div>
         <ul className="flex flex-col mt-6">
           <li className="mb-4">
-            <a
+            <Link
               href="/"
               className="text-gray-400 hover:text-white cursor-pointer"
             >
               Dashboard
-            </a>
+            </Link>
           </li>
           <li className="mb-4">
-            <a
+            <Link
               href="/billing"
               className="text-gray-400 hover:text-white cursor-pointer"
             >
               Billing
-            </a>
+            </Link>
           </li>
           <li className="mb-4">
-            <a
+            <Link
               href="/settings"
               className="text-gray-400 hover:text-white cursor-pointer"
             >
               Settings
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
