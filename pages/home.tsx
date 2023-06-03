@@ -1,17 +1,17 @@
 import Dashboard from "@/components/Dashboard";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
-import Link from "next/link";
 import React from "react";
 
-const index = () => {
+export default function home() {
   return (
     <div>
-      <Navbar />
-      <Sidebar />
+      {" "}
+      <div>
+        <Navbar />
+        <Sidebar />
+      </div>
       <Dashboard />
     </div>
   );
-};
-
-export default index;
+}
