@@ -9,7 +9,7 @@ export default function OrderList() {
           <button className="bg-blue-500 float-right p-3 text-white rounded-lg mb-4">Place Command</button>
           <table className="w-full whitespace-no-wrap">
             <thead>
-              <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+              <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                 <th className="px-4 py-3"></th>
                 <th className="px-4 py-3">Document name</th>
                 <th className="px-4 py-3">Description</th>
@@ -18,7 +18,7 @@ export default function OrderList() {
                 <th className="px-4 py-3">Actions</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+            <tbody className="bg-white divide-y">
              
              <OrderItem />
              <OrderItem />
