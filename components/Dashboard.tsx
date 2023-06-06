@@ -3,7 +3,7 @@ import React from 'react'
 export default function Dashboard() {
   return (
     <div>
-         <div className="grid gap-6 mb-8 mt-20 md:grid-cols-2 xl:grid-cols-4">
+         <div className="grid gap-6 mb-8 mt-20 containter  md:grid-cols-2 xl:grid-cols-4">
               <div
                 className="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
               >
@@ -20,12 +20,12 @@ export default function Dashboard() {
                   <p
                     className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
                   >
-                    Total clients
+                    Number of Files
                   </p>
                   <p
                     className="text-lg font-semibold text-gray-700 dark:text-gray-200"
                   >
-                    6389
+                    12 
                   </p>
                 </div>
               </div>
@@ -47,12 +47,12 @@ export default function Dashboard() {
                   <p
                     className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
                   >
-                    Account balance
+                    Total Ammount Spent
                   </p>
                   <p
                     className="text-lg font-semibold text-gray-700 dark:text-gray-200"
                   >
-                    $ 46,760.89
+                    5000frs
                   </p>
                 </div>
               </div>
@@ -72,12 +72,12 @@ export default function Dashboard() {
                   <p
                     className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
                   >
-                    New sales
+                    Files Printed
                   </p>
                   <p
                     className="text-lg font-semibold text-gray-700 dark:text-gray-200"
                   >
-                    376
+                    6
                   </p>
                 </div>
               </div>
@@ -99,12 +99,12 @@ export default function Dashboard() {
                   <p
                     className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
                   >
-                    Pending contacts
+                    Files Saved
                   </p>
                   <p
                     className="text-lg font-semibold text-gray-700 dark:text-gray-200"
                   >
-                    35
+                    9
                   </p>
                 </div>
               </div>

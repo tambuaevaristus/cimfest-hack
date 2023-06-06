@@ -1,3 +1,4 @@
+import Body from "@/components/Body";
 import Dashboard from "@/components/Dashboard";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
@@ -9,7 +10,7 @@ const index = () => {
     <div>
       <Navbar />
       <Sidebar />
-      <Dashboard />
+      <Body />
     </div>
   );
 };

@@ -5,7 +5,10 @@ import { BsCreditCard2Front } from "react-icons/bs";
 export default function Sidebar() {
   return (
     <div>
-      <div className="z-20 hidden w-64 h-screen overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0">
+      <div className="fixed left-0 top-15 z-20 w-64 h-screen overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0">
+        <div className="text-center pt-5">
+          <h1 className="font-bold">Universal Printech</h1>
+        </div>
         <div className="py-4 text-gray-500 dark:text-gray-400">
           <div className="flex justify-center items-center flex-col">
             <div className="bg-gray-300 w-32 h-32 rounded-full overflow-hidden">
