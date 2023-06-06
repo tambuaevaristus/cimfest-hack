@@ -1,14 +1,14 @@
 import React from "react";
 import { ImMenu } from "react-icons/im";
-export default function Navbar() {
+export default function Navbar({ setIsNavOpen }:any) {
   return (
     <div>
-      <header className="z-10 py-4 z-10 w-full bg-white fixed top-0 shadow-md dark:bg-gray-800">
-        
+      <header className="z-10 py-4 z-10 w-full bg-white fixed top-0 shadow-md">
         <div className="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
           <button
             className="p-1 mr-5 -ml-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-purple"
             aria-label="Menu"
+            onClick={() => setIsNavOpen((prev:boolean) => !prev)}
           >
             <ImMenu size={20} />
           </button>
