@@ -11,9 +11,9 @@ export default function home() {
         <Navbar />
       <div className="flex">
         <Sidebar />
-      {/* <Dashboard /> */}
+      <Dashboard />
 
-      
+
       <OrderList />
       </div>
     </div>
