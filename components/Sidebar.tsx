@@ -3,17 +3,12 @@ import { BiHelpCircle, BiHome, BiLogOut, BiUser } from "react-icons/bi";
 
 import { BsCreditCard2Front } from "react-icons/bs";
 import Navbar from "./Navbar";
-export default function Sidebar() {
-  const [isNavOpen, setIsNavOpen] = useState(false); // initiate isNavOpen state with false
-
-  console.log(isNavOpen)
+export default function Sidebar({ isNavOpen }:any) {
+  console.log(isNavOpen);
   return (
     <div>
-      <Navbar setIsNavOpen={setIsNavOpen} />
-
-      <div className={isNavOpen ? "block md:block" : "md:block hidden"}>
-        <div className="fixed left-0 mt-[55px] z-20 w-64 h-screen overflow-y-auto bg-white md:block flex-shrink-0">
-         
+      <div className={isNavOpen ? "block lg:block" : "lg:block hidden"}>
+        <div className="fixed left-0 md:mt-[60px] z-20 w-64 h-screen overflow-y-auto bg-white md:block flex-shrink-0">
           <div className="py-4 text-gray-500 dark:text-gray-400">
             <div className="flex justify-center items-center flex-col">
               <div className="bg-gray-300 w-32 h-32 rounded-full overflow-hidden">
