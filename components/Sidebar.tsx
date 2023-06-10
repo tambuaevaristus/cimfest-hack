@@ -3,17 +3,13 @@ import { BiHelpCircle, BiHome, BiLogOut, BiUser } from "react-icons/bi";
 
 import { BsCreditCard2Front } from "react-icons/bs";
 import Navbar from "./Navbar";
-export default function Sidebar() {
-  const [isNavOpen, setIsNavOpen] = useState(false); // initiate isNavOpen state with false
-
-  console.log(isNavOpen)
+import Link from "next/link";
+export default function Sidebar({ isNavOpen }:any) {
+  console.log(isNavOpen);
   return (
     <div>
-      <Navbar setIsNavOpen={setIsNavOpen} />
-
-      <div className={isNavOpen ? "block md:block" : "md:block hidden"}>
-        <div className="fixed left-0 mt-[55px] z-20 w-64 h-screen overflow-y-auto bg-white md:block flex-shrink-0">
-         
+      <div className={isNavOpen ? "block lg:block" : "lg:block hidden"}>
+        <div className="fixed left-0 md:mt-[60px] z-20 p-5 h-screen overflow-y-auto bg-white md:block">
           <div className="py-4 text-gray-500 dark:text-gray-400">
             <div className="flex justify-center items-center flex-col">
               <div className="bg-gray-300 w-32 h-32 rounded-full overflow-hidden">
@@ -33,34 +29,34 @@ export default function Sidebar() {
                   className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
                   aria-hidden="true"
                 ></span>
-                <a
+                <Link
                   className="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                  href="index.html"
+                  href="/"
                 >
                   <BiHome size={20} />
 
                   <span className="ml-4">Dashboard</span>
-                </a>
+                </Link>
               </li>
             </ul>
             <ul>
               <li className="relative px-6 py-3">
-                <a
+                <Link
                   className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                  href="forms.html"
+                  href="/profile"
                 >
                   <BiUser size={20} />
                   <span className="ml-4">Profile</span>
-                </a>
+                </Link>
               </li>
               <li className="relative px-6 py-3">
-                <a
+                <Link
                   className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                   href="cards.html"
                 >
                   <BsCreditCard2Front size={20} />
                   <span className="ml-4">Billing</span>
-                </a>
+                </Link>
               </li>
               <li className="relative px-6 py-3">
                 <a
@@ -81,13 +77,13 @@ export default function Sidebar() {
                 </a>
               </li>{" "}
               <li className="relative px-6 py-3">
-                <a
+                <Link
                   className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                  href="charts.html"
+                  href="login"
                 >
                   <BiLogOut size={20} />
                   <span className="ml-4">Logout</span>
-                </a>
+                </Link>
               </li>
             </ul>
             {/* <div className="px-6 my-6">

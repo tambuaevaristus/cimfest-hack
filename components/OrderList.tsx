@@ -1,12 +1,14 @@
 import React from "react";
 import OrderItem from "./OrderItem";
+import Link from "next/link";
 
 export default function OrderList() {
   return (
     <div>
       <div className="w-full overflow-hidden rounded-lg shadow-xs">
+      <Link href="/file_upload" className="bg-blue-500 float-right p-3 text-white rounded-lg mb-4">Place Command</Link>
+
         <div className="w-full overflow-x-auto">
-          <button className="bg-blue-500 float-right p-3 text-white rounded-lg mb-4">Place Command</button>
           <table className="w-full whitespace-no-wrap">
             <thead>
               <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50 dark:text-gray-400 dark:bg-gray-800">

@@ -1,12 +1,13 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
+import Link from "next/link";
 export default function login() {
   return (
-    <div className=" w-5/6 mx-auto my-auto my-[40px] bg-white border ">
+    <div className=" w-5/6 mx-auto my-[30px] my-[40px] bg-white border ">
       <div className="container h-full px-6 py-24">
         <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
-          <div className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
+          <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12">
             <img
               src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
               className="w-full"
@@ -14,7 +15,7 @@ export default function login() {
             />
           </div>
 
-          <div className="md:w-8/12 lg:ml-6 lg:w-5/12 px-6">
+          <div className="md:w-8/12 lg:ml-6 lg:w-6/12 px-2">
             <div>
               <div>
                 <h2 className="font-bold text-[25px]">
@@ -88,7 +89,13 @@ export default function login() {
               </button>
 
               <p className="text-sm text-gray-500 my-3 text-center">
-                Do not have an account? <a href="" className="text-blue-500">Create account</a>
+                Do not have an account?{" "}
+                <Link
+                  href="/signup"
+                  className="text-blue-500"
+                >
+                  Signup
+                </Link>
               </p>
             </div>
           </div>
