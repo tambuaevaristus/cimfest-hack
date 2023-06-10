@@ -1,12 +1,13 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
+import Link from "next/link";
 export default function signup() {
   return (
     <div className=" w-5/6 mx-auto my-auto my-[40px] bg-white border ">
       <div className="container h-full px-6 py-24">
         <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
-          <div className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
+          <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12">
             <img
               src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
               className="w-full"
@@ -14,12 +15,10 @@ export default function signup() {
             />
           </div>
 
-          <div className="md:w-8/12 lg:ml-6 lg:w-5/12 px-6">
+          <div className="md:w-8/12 lg:ml-6 lg:w-6/12 px-2">
             <div>
               <div>
-                <h2 className="font-bold text-[25px]">
-                  CREATE YOUR ACCOUNT
-                </h2>
+                <h2 className="font-bold text-[25px]">CREATE YOUR ACCOUNT</h2>
                 <p className="text-gray-500">
                   Field in the following information fieds to access your
                   account
@@ -96,7 +95,10 @@ export default function signup() {
               </button>
 
               <p className="text-sm text-gray-500 my-3 text-center">
-                Do not have an account? <a href="" className="text-blue-500">Create account</a>
+                Already have an account?{" "}
+                <Link href="/login" className="text-blue-500">
+                  Signin
+                </Link>
               </p>
             </div>
           </div>

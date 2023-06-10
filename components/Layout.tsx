@@ -9,11 +9,11 @@ export default function Layout({ children }: any) {
     <div>
       <Navbar setIsNavOpen={setIsNavOpen} />
 
-      <div className="md:grid">
-        <div className="grid-cols-4">
+      <div className="flex w-full">
+        <div className="lg:w-1/4">
           <Sidebar isNavOpen={isNavOpen} />
         </div>
-        <div className="grid-cols-8 mt-20">{children}</div>
+        <div className="lg:w-3/4 mt-[50px]">{children}</div>
       </div>
     </div>
   );
