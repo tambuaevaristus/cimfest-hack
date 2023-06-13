@@ -9,7 +9,7 @@ export default function Sidebar({ isNavOpen }:any) {
   return (
     <div>
       <div className={isNavOpen ? "block lg:block" : "lg:block hidden"}>
-        <div className="fixed left-0 md:mt-[60px] z-20 p-5 h-screen overflow-y-auto bg-white md:block">
+        <div className="fixed left-0 mt-[60px] z-20 p-5 h-screen overflow-y-auto bg-white md:block">
           <div className="py-4 text-gray-500 dark:text-gray-400">
             <div className="flex justify-center items-center flex-col">
               <div className="bg-gray-300 w-32 h-32 rounded-full overflow-hidden">
