@@ -5,7 +5,6 @@ import { BsCreditCard2Front } from "react-icons/bs";
 import Navbar from "./Navbar";
 import Link from "next/link";
 export default function Sidebar({ isNavOpen }:any) {
-  console.log(isNavOpen);
   return (
     <div>
       <div className={isNavOpen ? "block lg:block" : "lg:block hidden"}>

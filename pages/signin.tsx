@@ -5,7 +5,6 @@ import Link from "next/link";
 export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const login = async () => {
     const user = await fetch(
       "https://upsolution-api.onrender.com/api/v1/auth/login",
@@ -36,7 +35,7 @@ export default function Signin() {
     console.log("user ===>", user);
   };
   return (
-    <div className=" w-5/6 mx-auto my-[30px] my-[40px] bg-white border ">
+    <div className=" mx-auto my-[30px] my-[40px] container bg-white border ">
       <div className="container h-full px-6 py-24">
         <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
           <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12">
