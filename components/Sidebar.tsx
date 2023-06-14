@@ -5,7 +5,6 @@ import { BsCreditCard2Front } from "react-icons/bs";
 import Navbar from "./Navbar";
 import Link from "next/link";
 export default function Sidebar({ isNavOpen }:any) {
-  console.log(isNavOpen);
   return (
     <div>
       <div className={isNavOpen ? "block lg:block" : "lg:block hidden"}>
@@ -79,7 +78,7 @@ export default function Sidebar({ isNavOpen }:any) {
               <li className="relative px-6 py-3">
                 <Link
                   className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                  href="login"
+                  href="signin"
                 >
                   <BiLogOut size={20} />
                   <span className="ml-4">Logout</span>
