@@ -11,7 +11,6 @@ export default function Signin() {
   const [password, setPassword] = useState("");
   const router = useRouter();
   const dispatch = useDispatch();
-
   const login = async () => {
     await fetch("https://upsolution-api.onrender.com/api/v1/auth/login", {
       method: "POST",
@@ -42,6 +41,7 @@ export default function Signin() {
           role: user.data.user.role.code,
         };
         dispatch(addUser(userData));
+        router.push("/");
       })
       .catch(function (error) {
         error;

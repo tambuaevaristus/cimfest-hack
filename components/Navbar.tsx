@@ -5,7 +5,7 @@ export default function Navbar({ setIsNavOpen }: any) {
   return (
     <div>
       <header className="z-10 py-4 w-full bg-white fixed top-0 shadow-md">
-        <div className="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
+        <div className="container flex items-center justify-between h-full px-6 mx-auto text-blue-600">
           <button
             className="p-1 mr-5 -ml-1 rounded-md lg:hidden focus:outline-none focus:shadow-outline-purple"
             aria-label="Menu"
@@ -15,7 +15,7 @@ export default function Navbar({ setIsNavOpen }: any) {
           </button>
           <h1 className="font-bold">Universal Printech</h1>
           <div className="flex justify-center flex-1 lg:mr-32">
-            <div className="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
+            {/* <div className="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
               <div className="absolute inset-y-0 flex items-center pl-2">
                 <BiSearch />
               </div>
@@ -25,7 +25,7 @@ export default function Navbar({ setIsNavOpen }: any) {
                 placeholder="Search for projects"
                 aria-label="Search"
               />
-            </div>
+            </div> */}
           </div>
           <ul className="flex items-center flex-shrink-0 space-x-6">
             <li className="relative">
@@ -33,7 +33,7 @@ export default function Navbar({ setIsNavOpen }: any) {
                 <BiBell />
                 <span
                   aria-hidden="true"
-                  className="absolute top-0 right-0 inline-block w-3 h-3 transform translate-x-1 -translate-y-1 bg-red-600 border-2 border-white rounded-full dark:border-gray-800"
+                  className="absolute top-0 right-0 inline-block w-3 h-3 transform translate-x-1 -translate-y-1 bg-red-600 border-2 border-white rounded-full"
                 ></span>
               </button>
               <div></div>
