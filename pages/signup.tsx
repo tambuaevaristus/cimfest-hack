@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import Link from "next/link";
+import { User } from "@/types";
+import { addUser } from "@/slice/userSlice";
+import { useDispatch } from "react-redux";
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const dispatch = useDispatch();
   const signUp = async () => {
     const user = await fetch(
       "https://upsolution-api.onrender.com/api/v1/auth/signup",
@@ -25,11 +28,24 @@ export default function Signup() {
         }),
       }
     )
-      .then(function (response) {
-        if (!response.ok) {
-          throw Error(response.statusText);
+      .then(function (user) {
+        if (!user.ok) {
+          throw Error(user.statusText);
         }
-        return response.json();
+        return user.json();
+      })
+      .then((user) => {
+        const userData: User = {
+          id: user.data.user._id,
+          gender: "",
+          phoneNumber: "",
+          profileImage: "",
+          fullName: user.data.user.fullName,
+          email: user.data.user.email,
+          token: user.token,
+          role: user.data.user.role.code,
+        };
+        dispatch(addUser(userData));
       })
       .catch(function (error) {
         error;
