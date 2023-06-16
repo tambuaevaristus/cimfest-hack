@@ -324,10 +324,12 @@ export default function Create() {
                     Binding Type
                   </label>
                   <select
-                    onClick={(e:any) => setBidingType(e.target.value)}
+                    onClick={(e: any) => setBidingType(e.target.value)}
                     className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100"
                   >
-                    <option value="no binding" selected>No binding</option>
+                    <option value="no binding" selected>
+                      No binding
+                    </option>
                     <option value="spiral">Spiral</option>
                     <option value="pin">Pin</option>
                   </select>

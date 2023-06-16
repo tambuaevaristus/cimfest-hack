@@ -2,37 +2,54 @@ import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { addUser } from "@/slice/userSlice";
+import { useDispatch } from "react-redux";
+import { User } from "@/types";
 export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const login = async () => {
-    const user = await fetch(
-      "https://upsolution-api.onrender.com/api/v1/auth/login",
-      {
-        method: "POST",
+  const router = useRouter();
+  const dispatch = useDispatch();
 
-        headers: {
-          "Content-type": "application/json;charset=UTF-8",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-       
-        }),
-      }
-    )
-      .then(function (response) {
-        if (!response.ok) {
-          throw Error(response.statusText);
+  const login = async () => {
+    await fetch("https://upsolution-api.onrender.com/api/v1/auth/login", {
+      method: "POST",
+
+      headers: {
+        "Content-type": "application/json;charset=UTF-8",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    })
+      .then(function (user) {
+        if (!user.ok) {
+          throw Error(user.statusText);
         }
-        return response.json();
+        return user.json();
+      })
+      .then((user) => {
+        const userData: User = {
+          id: user.data.user._id,
+          gender: "",
+          phoneNumber: "",
+          profileImage: "",
+          fullName: user.data.user.fullName,
+          email: user.data.user.email,
+          token: user.token,
+          role: user.data.user.role.code,
+        };
+        dispatch(addUser(userData));
       })
       .catch(function (error) {
         error;
       });
+  };
 
-    console.log({ email });
-    console.log("user ===>", user);
+  const handleGoogleAuth = async () => {
+    await router.push("https://upsolution-api.onrender.com/api/v1/auth/google");
   };
   return (
     <div className=" mx-auto my-[30px] my-[40px] container bg-white border ">
@@ -60,7 +77,10 @@ export default function Signin() {
               <div className="my-5">
                 <p className="font-bold">Signin with</p>
                 <div className="flex justify-center">
-                  <button className="border w-1/3 font-bold py-2 px-4 rounded-md mr-2">
+                  <button
+                    onClick={handleGoogleAuth}
+                    className="border w-1/3 font-bold py-2 px-4 rounded-md mr-2"
+                  >
                     <FcGoogle className="mx-auto" />
                   </button>
                   <button className=" text-white w-1/3 border font-bold py-2 px-4 rounded-md mr-2">
@@ -94,7 +114,6 @@ export default function Signin() {
                   type="password"
                   className="peer block min-h-[auto] w-full border rounded px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                   id="exampleFormControlInput3"
-
                   placeholder="Password"
                   onChange={(e) => setPassword(e.target.value)}
                 />
