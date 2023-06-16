@@ -5,12 +5,14 @@ import Link from "next/link";
 import { User } from "@/types";
 import { addUser } from "@/slice/userSlice";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const dispatch = useDispatch();
+  const router = useRouter();
   const signUp = async () => {
     const user = await fetch(
       "https://upsolution-api.onrender.com/api/v1/auth/signup",
@@ -46,6 +48,8 @@ export default function Signup() {
           role: user.data.user.role.code,
         };
         dispatch(addUser(userData));
+        router.push("/")
+        
       })
       .catch(function (error) {
         error;

@@ -4,7 +4,13 @@ import { BiHelpCircle, BiHome, BiLogOut, BiUser } from "react-icons/bi";
 import { BsCreditCard2Front } from "react-icons/bs";
 import Navbar from "./Navbar";
 import Link from "next/link";
-export default function Sidebar({ isNavOpen }:any) {
+import userSlice from "@/slice/userSlice";
+import { RootState } from "@/store";
+import { useSelector } from "react-redux";
+
+export default function Sidebar({ isNavOpen }: any) {
+  const userInfo = useSelector((state: RootState) => state.user);
+  console.log(userInfo)
   return (
     <div>
       <div className={isNavOpen ? "block lg:block" : "lg:block hidden"}>
@@ -18,8 +24,8 @@ export default function Sidebar({ isNavOpen }:any) {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h2 className="text-xl font-bold mt-4">Tambua Evaristus</h2>
-              <p className="text-gray-600 mt-2">evaristustambua@gmail.com</p>
+              <h2 className="text-xl font-bold mt-4">{userInfo.userData?.fullName}</h2>
+              <p className="text-gray-600 mt-2">{userInfo.userData?.email}</p>
               <p className="text-gray-600">+237676814364</p>
             </div>
             <ul className="mt-6">
