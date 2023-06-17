@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
-import { printPlugin } from "@react-pdf-viewer/print";
 import "@react-pdf-viewer/print/lib/styles/index.css";
-import { PrintIcon } from "@react-pdf-viewer/print";
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
