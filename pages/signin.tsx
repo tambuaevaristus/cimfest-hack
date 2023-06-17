@@ -14,6 +14,7 @@ export default function Signin() {
   const login = async () => {
     await fetch("https://upsolution-api.onrender.com/api/v1/auth/login", {
       method: "POST",
+      mode: 'cors',
 
       headers: {
         "Content-type": "application/json;charset=UTF-8",
