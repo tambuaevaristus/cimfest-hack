@@ -354,7 +354,7 @@ export default function Create() {
               <label className="block mb-2 text-sm  font-medium text-gray-900 dark:text-white">
                 Upload file
               </label>
-              <div className="bg-white overflow-scroll  w-full h-[600px] rounded-md">
+              <div className="bg-white overflow-y-scroll  w-full h-[600px] rounded-md">
               
 
                 <PDFViewer />
