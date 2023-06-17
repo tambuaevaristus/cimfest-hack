@@ -18,7 +18,7 @@ export default function Signup() {
       "https://upsolution-api.onrender.com/api/v1/auth/signup",
       {
         method: "POST",
-        mode: 'cors',
+        mode: 'no-cors',
         headers: {
           "Content-type": "application/json;charset=UTF-8",
         },
