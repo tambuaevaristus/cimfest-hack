@@ -27,7 +27,7 @@ export default function PDFViewer() {
       <div className="bg-red-300">
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.15.349/build/pdf.worker.min.js">
           <>
-            <Viewer fileUrl="/test.pdf" plugins={[newPlugin]} />
+            <Viewer fileUrl="https://jeeadv.ac.in/past_qps/2017_1.pdf" plugins={[newPlugin]} />
           </>
         </Worker>
       </div>
