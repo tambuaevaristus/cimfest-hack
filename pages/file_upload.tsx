@@ -1,3 +1,4 @@
+import PDFViewer from "@/components/file/PDFViewer";
 import React, { useEffect, useRef, useState } from "react";
 import { BiTrash } from "react-icons/bi";
 
@@ -353,13 +354,16 @@ export default function Create() {
               <label className="block mb-2 text-sm  font-medium text-gray-900 dark:text-white">
                 Upload file
               </label>
-              <div className="bg-white  p-8 tottom-0  w-full h-[300px] rounded-md">
-                <input
+              <div className="bg-white overflow-scroll  w-full h-[600px] rounded-md">
+              
+
+                <PDFViewer />
+              </div>
+              <input
                   type="file"
                   onChange={(e) => setFile(e.target.value)}
                   className="file-input file-input-ghost w-full my-auto mx-auto max-w-xs"
                 />
-              </div>
               <div className="flex justify-between px-3">
                 <button className="my-3 hover:text-blue-500">
                   Replace file
