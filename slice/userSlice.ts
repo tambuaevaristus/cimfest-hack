@@ -6,7 +6,7 @@ export interface UserState {
   userData: User | null;
   paymentPhoneNumber: string;
 }
-
+// redux
 const initialState: UserState = {
   userData: null,
   paymentPhoneNumber: "",
