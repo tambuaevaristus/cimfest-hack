@@ -19,7 +19,11 @@ export default function Sidebar({ isNavOpen }: any) {
             <div className="flex justify-center items-center flex-col">
               <div className="bg-gray-300 w-32 h-32 rounded-full overflow-hidden">
                 <img
-                  src={userInfo?.userData?.image}
+                  src={
+                    userInfo?.userData?.image
+                      ? userInfo?.userData?.image
+                      : "profileImage"
+                  }
                   alt="Profile Image"
                   className="w-full h-full object-cover"
                 />
