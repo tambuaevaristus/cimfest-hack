@@ -7,10 +7,10 @@ import Link from "next/link";
 import userSlice from "@/slice/userSlice";
 import { RootState } from "@/store";
 import { useSelector } from "react-redux";
+import { signOut } from "next-auth/react";
 
 export default function Sidebar({ isNavOpen }: any) {
   const userInfo = useSelector((state: RootState) => state.user);
-  console.log(userInfo)
   return (
     <div>
       <div className={isNavOpen ? "block lg:block" : "lg:block hidden"}>
@@ -19,12 +19,14 @@ export default function Sidebar({ isNavOpen }: any) {
             <div className="flex justify-center items-center flex-col">
               <div className="bg-gray-300 w-32 h-32 rounded-full overflow-hidden">
                 <img
-                  src="profile-image.jpg"
+                  src={userInfo?.userData?.image}
                   alt="Profile Image"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h2 className="text-xl font-bold mt-4">{userInfo.userData?.fullName}</h2>
+              <h2 className="text-xl font-bold mt-4">
+                {userInfo.userData?.fullName}
+              </h2>
               <p className="text-gray-600 mt-2">{userInfo.userData?.email}</p>
               <p className="text-gray-600">+237676814364</p>
             </div>
@@ -87,7 +89,9 @@ export default function Sidebar({ isNavOpen }: any) {
                   href="signin"
                 >
                   <BiLogOut size={20} />
-                  <span className="ml-4">Logout</span>
+                  <span className="ml-4" onClick={() => signOut()}>
+                    Logout
+                  </span>
                 </Link>
               </li>
             </ul>
