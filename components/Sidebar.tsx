@@ -7,10 +7,10 @@ import Link from "next/link";
 import userSlice from "@/slice/userSlice";
 import { RootState } from "@/store";
 import { useSelector } from "react-redux";
+import { signOut } from "next-auth/react";
 
 export default function Sidebar({ isNavOpen }: any) {
   const userInfo = useSelector((state: RootState) => state.user);
-  console.log(userInfo)
   return (
     <div>
       <div className={isNavOpen ? "block lg:block" : "lg:block hidden"}>
@@ -19,12 +19,14 @@ export default function Sidebar({ isNavOpen }: any) {
             <div className="flex justify-center items-center flex-col">
               <div className="bg-gray-300 w-32 h-32 rounded-full overflow-hidden">
                 <img
-                  src="profile-image.jpg"
+                  src={userInfo?.userData?.image}
                   alt="Profile Image"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h2 className="text-xl font-bold mt-4">{userInfo.userData?.fullName}</h2>
+              <h2 className="text-xl font-bold mt-4">
+                {userInfo.userData?.fullName}
+              </h2>
               <p className="text-gray-600 mt-2">{userInfo.userData?.email}</p>
               <p className="text-gray-600">+237676814364</p>
             </div>
@@ -82,13 +84,15 @@ export default function Sidebar({ isNavOpen }: any) {
                 </a>
               </li>{" "}
               <li className="relative px-6 py-3">
-                <Link
+                {/* <Link
                   className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                   href="signin"
-                >
-                  <BiLogOut size={20} />
-                  <span className="ml-4">Logout</span>
-                </Link>
+                > */}
+                <BiLogOut size={20} />
+                <span className="ml-4" onClick={() => signOut()}>
+                  Logout
+                </span>
+                {/* </Link> */}
               </li>
             </ul>
             {/* <div className="px-6 my-6">

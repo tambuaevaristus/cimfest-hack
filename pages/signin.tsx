@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import Link from "next/link";
@@ -6,15 +6,28 @@ import { useRouter } from "next/router";
 import { addUser } from "@/slice/userSlice";
 import { useDispatch } from "react-redux";
 import { User } from "@/types";
+import { signIn, useSession } from "next-auth/react";
 export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const router = useRouter();
   const dispatch = useDispatch();
+  const session = useSession();
+
+  console.log("session on signin page: ", session);
+
+  useEffect(() => {
+    if (session?.data?.user) {
+      dispatch(addUser(session?.data?.user));
+      router.push("/");
+    }
+  }, [session, router, dispatch]);
+
   const login = async () => {
     await fetch("https://upsolution-api.onrender.com/api/v1/auth/login", {
       method: "POST",
-      mode: 'no-cors',
+      mode: "no-cors",
 
       headers: {
         "Content-type": "application/json;charset=UTF-8",
@@ -49,9 +62,6 @@ export default function Signin() {
       });
   };
 
-  const handleGoogleAuth = async () => {
-    await router.push("https://upsolution-api.onrender.com/api/v1/auth/google");
-  };
   return (
     <div className=" mx-auto my-[30px] my-[40px] container bg-white border ">
       <div className="container h-full px-6 py-24">
@@ -79,7 +89,7 @@ export default function Signin() {
                 <p className="font-bold">Signin with</p>
                 <div className="flex justify-center">
                   <button
-                    onClick={handleGoogleAuth}
+                    onClick={() => signIn("google")}
                     className="border w-1/3 font-bold py-2 px-4 rounded-md mr-2"
                   >
                     <FcGoogle className="mx-auto" />
@@ -95,7 +105,7 @@ export default function Signin() {
 
               <div className="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
                 <p className="mx-4 mb-0 text-gray-500 text-center text-sm dark:text-neutral-200">
-                  Or ccontinue with
+                  Or continue with
                 </p>
               </div>
               <div className="relative mb-6" data-te-input-wrapper-init>
