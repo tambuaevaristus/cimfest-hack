@@ -1,12 +1,12 @@
 /**User types signature */
 export interface User {
-  id?: string;
-  name: string | null | undefined;
+  id?: string | null | undefined;
+  name?: string | null | undefined;
   gender?: string | null | undefined;
   phoneNumber?: string | null | undefined;
-  email: string;
+  email?: string | null | undefined;
   token?: string | null | undefined;
-  image: string | undefined;
+  image?: string | null | undefined;
   role?: {
     code: string;
   };
