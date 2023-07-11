@@ -15,7 +15,7 @@ export default function Signup() {
   const router = useRouter();
   const signUp = async () => {
     const user = await fetch(
-      "https://upsolution-api.onrender.com/api/v1/auth/signup",
+      "/api/v1/auth/signup",
       {
         method: "POST",
         mode: 'no-cors',
