@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 export default function Layout({ children }: any) {
   const [isNavOpen, setIsNavOpen] = useState(false); // initiate isNavOpen state with false
   const router = useRouter();
+  
   return (
     <div>
       <Navbar setIsNavOpen={setIsNavOpen} />

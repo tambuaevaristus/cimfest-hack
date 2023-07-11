@@ -11,12 +11,13 @@ import { signOut } from "next-auth/react";
 
 export default function Sidebar({ isNavOpen }: any) {
   const userInfo = useSelector((state: RootState) => state.user);
+  const role: string = "admin";
   return (
     <div>
       <div className={isNavOpen ? "block lg:block" : "lg:block hidden"}>
         <div className="fixed left-0 mt-[60px] z-20 p-5 h-screen overflow-y-auto bg-white md:block">
-          <div className="py-4 text-gray-500 dark:text-gray-400">
-            <div className="flex justify-center items-center flex-col">
+          <div className="py-2 text-gray-500 dark:text-gray-400">
+            {/* <div className="flex justify-center items-center flex-col">
               <div className="bg-gray-300 w-32 h-32 rounded-full overflow-hidden">
                 <img
                   src={
@@ -33,13 +34,9 @@ export default function Sidebar({ isNavOpen }: any) {
               </h2>
               <p className="text-gray-600 mt-2">{userInfo.userData?.email}</p>
               <p className="text-gray-600">+237676814364</p>
-            </div>
+            </div> */}
             <ul className="mt-6">
               <li className="relative px-6 py-3">
-                <span
-                  className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
-                  aria-hidden="true"
-                ></span>
                 <Link
                   className="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
                   href="/"
@@ -49,17 +46,7 @@ export default function Sidebar({ isNavOpen }: any) {
                   <span className="ml-4">Dashboard</span>
                 </Link>
               </li>
-            </ul>
-            <ul>
-              <li className="relative px-6 py-3">
-                <Link
-                  className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                  href="/profile"
-                >
-                  <BiUser size={20} />
-                  <span className="ml-4">Profile</span>
-                </Link>
-              </li>
+         
               <li className="relative px-6 py-3">
                 <Link
                   className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
@@ -69,6 +56,30 @@ export default function Sidebar({ isNavOpen }: any) {
                   <span className="ml-4">Billing</span>
                 </Link>
               </li>
+              {role == "user" ? (
+                <>
+                  <li className="relative px-6 py-3">
+                    <Link
+                      className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                      href="/users"
+                    >
+                      <BsCreditCard2Front size={20} />
+                      <span className="ml-4">Users</span>
+                    </Link>
+                  </li>
+                  <li className="relative px-6 py-3">
+                    <Link
+                      className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                      href="/commands"
+                    >
+                      <BsCreditCard2Front size={20} />
+                      <span className="ml-4">Commands</span>
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <></>
+              )}
               <li className="relative px-6 py-3">
                 <a
                   className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
@@ -87,6 +98,16 @@ export default function Sidebar({ isNavOpen }: any) {
                   <span className="ml-4">Setting</span>
                 </a>
               </li>{" "}
+
+              <li className="relative px-6 py-3">
+                <Link
+                  className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                  href="/profile"
+                >
+                  <BiUser size={20} />
+                  <span className="ml-4">Profile</span>
+                </Link>
+              </li>
               <li className="relative px-6 py-3">
                 {/* <Link
                   className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
