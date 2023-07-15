@@ -1,6 +1,9 @@
 import PDFViewer from "@/components/file/PDFViewer";
+import { addprint } from "@/slice/printSlice";
+import { PrintOption } from "@/types";
 import React, { useEffect, useRef, useState } from "react";
 import { BiTrash } from "react-icons/bi";
+import { useDispatch } from "react-redux";
 
 export default function Create() {
   const [docName, setDocName] = useState("");
@@ -20,10 +23,11 @@ export default function Create() {
   const [biding, setBiding] = useState("");
   const [bidingType, setBidingType] = useState("");
   const [extraDetails, setExtraDetails] = useState("");
-
+  const [cost, setCost] = useState();
   const [file, setFile] = useState("");
 
-  const fileObj = {
+  const dispatch = useDispatch();
+  const fileObj: PrintOption = {
     docName,
     numberOfCopies,
     paperType,
@@ -37,9 +41,11 @@ export default function Create() {
     biding,
     bidingType,
     extraDetails,
+    cost,
   };
   const handleSummitFile = () => {
     console.log(fileObj);
+    dispatch(addprint(fileObj));
   };
   return (
     <div>
@@ -355,15 +361,13 @@ export default function Create() {
                 Upload file
               </label>
               <div className="bg-white overflow-y-scroll  w-full h-[600px] rounded-md">
-              
-
                 <PDFViewer />
               </div>
               <input
-                  type="file"
-                  onChange={(e) => setFile(e.target.value)}
-                  className="file-input file-input-ghost w-full my-auto mx-auto max-w-xs"
-                />
+                type="file"
+                onChange={(e) => setFile(e.target.value)}
+                className="file-input file-input-ghost w-full my-auto mx-auto max-w-xs"
+              />
               <div className="flex justify-between px-3">
                 <button className="my-3 hover:text-blue-500">
                   Replace file
