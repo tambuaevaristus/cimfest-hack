@@ -1,7 +1,12 @@
 import CheckoutItem from "@/components/CheckoutItem";
+import { RootState } from "@/store";
 import React from "react";
+import { useSelector } from "react-redux";
 
-export default function checkout() {
+export default function Checkout() {
+  const commands = useSelector((state: RootState) => state.file);
+
+  console.log(commands)
   return (
     <div className="my-5">
       <h1 className="font-bold text-[30px]">Payment</h1>

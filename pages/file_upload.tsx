@@ -1,6 +1,7 @@
 import PDFViewer from "@/components/file/PDFViewer";
-import { addprint } from "@/slice/printSlice";
-import { PrintOption } from "@/types";
+import { addfile } from "@/slice/fileSlice";
+import { Command } from "@/types";
+import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import { useDispatch } from "react-redux";
@@ -27,7 +28,8 @@ export default function Create() {
   const [file, setFile] = useState("");
 
   const dispatch = useDispatch();
-  const fileObj: PrintOption = {
+  const router = useRouter();
+  const fileObj: Command = {
     docName,
     numberOfCopies,
     paperType,
@@ -44,8 +46,8 @@ export default function Create() {
     cost,
   };
   const handleSummitFile = () => {
-    console.log(fileObj);
-    dispatch(addprint(fileObj));
+    dispatch(addfile(fileObj));
+    router.push("/checkout");
   };
   return (
     <div>

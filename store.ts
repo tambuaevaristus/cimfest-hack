@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slice/userSlice";
-import printReducer from "./slice/printSlice";
+import fileReducer from "./slice/fileSlice";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    print: printReducer,
+    file: fileReducer,
   },
 });
 
