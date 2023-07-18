@@ -4,20 +4,23 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 export default function Checkout() {
-  const commands = useSelector((state: RootState) => state.file);
+  const commandList = useSelector((state: RootState) => state.file).commands;
+  console.log("the list ==>", commandList);
 
-  console.log(commands)
   return (
     <div className="my-5">
       <h1 className="font-bold text-[30px]">Payment</h1>
       <div className="bg-white p-10 w-4/5 my-2 rounded-lg">
         <h1 className="font-bold text-[20px]">Select Document</h1>
         <div className="my-2">
-          <CheckoutItem />
-          <CheckoutItem />
-          <CheckoutItem />
-          <CheckoutItem />
-          <CheckoutItem />
+          {commandList?.map((command, key) => (
+            <CheckoutItem
+              key={key}
+              name={command.docName}
+              amount={command.cost}
+              pages={30}
+            />
+          ))}
         </div>
         <div className="my-4">
           <h1 className="font-bold text-[30px]">Order Summary</h1>

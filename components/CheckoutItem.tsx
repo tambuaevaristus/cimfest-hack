@@ -1,21 +1,23 @@
 import React from "react";
 
-export default function CheckoutItem() {
+interface Props {
+  name?: string;
+  amount?: number;
+  pages?: number;
+}
+export default function CheckoutItem({ name, amount, pages }: Props) {
   return (
-    
-    
-      <div className="flex justify-between py-3 border-t">
-        <div className="">
-          <p>Doc Name</p>
+    <div className="flex justify-between py-3 border-t">
+      <div className="">
+        <p>{name}</p>
 
-          <p className="font-bold">10,000 Fcfa</p>
-          <p className="text-sm text-gray-500">20 Pages | Dec 20,2023</p>
-        </div>
-
-        <div className="">
-          <input type="checkbox" name="" id="" />
-        </div>
+        <p className="font-bold">{amount} Fcfa</p>
+        <p className="text-sm text-gray-500">{pages} Pages | Dec 20,2023</p>
       </div>
-    
+
+      <div className="">
+        <input type="checkbox" name="" id="" />
+      </div>
+    </div>
   );
 }

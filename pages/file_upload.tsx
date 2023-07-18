@@ -5,7 +5,11 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import { useDispatch } from "react-redux";
+// import * as pdfjs from "pdfjs-dist";
+import {pdfjs} from "pdfjs-dist";
+import PDFDisplay from "@/components/file/PDFDisplay";
 
+// import pdfjsWorker from "pdfjs-dist/legacy/build/pdf.worker.js";
 export default function Create() {
   const [docName, setDocName] = useState("");
   const [numberOfCopies, setNumberOfCopies] = useState();
@@ -26,6 +30,8 @@ export default function Create() {
   const [extraDetails, setExtraDetails] = useState("");
   const [cost, setCost] = useState();
   const [file, setFile] = useState("");
+
+  // Pdf numbering
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -87,9 +93,7 @@ export default function Create() {
                     Pages{" "}
                   </label>
                   <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2">
-                    <option value="Landscape" selected>
-                      All
-                    </option>
+                    <option value="Landscape">All</option>
                     <option value="Potrait">Some Pages</option>
                   </select>
                 </div>
@@ -101,9 +105,7 @@ export default function Create() {
                     onChange={(e: any) => setPaperType(e.target.value)}
                     className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100"
                   >
-                    <option value="normal" selected>
-                      Normal
-                    </option>
+                    <option value="normal">Normal</option>
                     <option value="Hard Page">Hard Page</option>
                   </select>
                 </div>
@@ -115,9 +117,7 @@ export default function Create() {
                     onChange={(e: any) => setPaperColor(e.target.value)}
                     className="my-auto bg-gray-50 border-gray-300 px-2 rounded-md py-2 bg-gray-100"
                   >
-                    <option value="white" selected>
-                      white
-                    </option>
+                    <option value="white">white</option>
                     <option value="Green">Green</option>
                     <option value="Red">Red</option>
                     <option value="Pink">Pink</option>
@@ -233,9 +233,7 @@ export default function Create() {
                     onChange={(e) => setPagesPerSheet(e.target.value)}
                     className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100"
                   >
-                    <option value="1" selected>
-                      1
-                    </option>
+                    <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
@@ -247,9 +245,7 @@ export default function Create() {
                     Layout Direction
                   </label>
                   <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100">
-                    <option value="A4" selected>
-                      A4
-                    </option>
+                    <option value="A4">A4</option>
                     <option value="A3">A3</option>
                     <option value="A5">A5</option>
                   </select>
@@ -259,9 +255,7 @@ export default function Create() {
                     Margin
                   </label>
                   <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100">
-                    <option value="A4" selected>
-                      A4
-                    </option>
+                    <option value="A4">A4</option>
                     <option value="A3">A3</option>
                     <option value="A5">A5</option>
                   </select>
@@ -336,9 +330,7 @@ export default function Create() {
                     onClick={(e: any) => setBidingType(e.target.value)}
                     className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100"
                   >
-                    <option value="no binding" selected>
-                      No binding
-                    </option>
+                    <option value="no binding">No binding</option>
                     <option value="spiral">Spiral</option>
                     <option value="pin">Pin</option>
                   </select>
@@ -363,7 +355,10 @@ export default function Create() {
                 Upload file
               </label>
               <div className="bg-white overflow-y-scroll  w-full h-[600px] rounded-md">
-                <PDFViewer />
+                {/* <PDFViewer />
+                 */}
+
+                 <PDFDisplay />
               </div>
               <input
                 type="file"
