@@ -284,6 +284,7 @@ export default function Create() {
                         className="form-radio h-4 w-4 text-blue-600"
                         value="plain"
                         name="printColor"
+                        // checked={value === 'false'}
                         onChange={(e) => setPrintType(e.target.value)}
                       />
                       <span className="ml-2">Plain</span>
