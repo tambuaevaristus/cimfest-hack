@@ -7,7 +7,25 @@ export interface User {
   email?: string | null | undefined;
   token?: string | null | undefined;
   image?: string | null | undefined;
+
   role?: {
     code: string;
   };
+}
+
+export interface Command {
+  docName?: string;
+  numberOfCopies?: string;
+  paperType?: string;
+  paperSize?: string;
+  orientation?: string;
+  printSides?: string;
+  printColor?: string;
+  paperColor?: string;
+  pagesPerSheet?: string;
+  printType?: string;
+  biding?: string;
+  bidingType?: string;
+  extraDetails?: string;
+  cost?: number;
 }
