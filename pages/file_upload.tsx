@@ -6,7 +6,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 // import * as pdfjs from "pdfjs-dist";
-import { pdfjs } from "pdfjs-dist";
 
 import PDFDisplay from "@/components/file/PDFDisplay";
 import { RootState } from "@/store";
@@ -441,7 +440,7 @@ export default function Create() {
                         onClick={addFile}
                         className="p-2 border rounded-md bg-blue-500 text-white my-auto "
                       >
-                        Proceed to Payment
+                        Add File
                       </button>
                     </div>
                   </div>

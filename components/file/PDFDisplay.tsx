@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import { Document, Page } from 'react-pdf';
 
-const PDFDisplay = (props) => {
+const PDFDisplay = () => {
     const [numPages, setNumPages] = useState(null);
   
-    const onDocumentLoadSuccess = ({ numPages }) => {
+    const onDocumentLoadSuccess = ({ numPages }:any) => {
       setNumPages(numPages);
     };
   
