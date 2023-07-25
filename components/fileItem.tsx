@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function OrderItem() {
+export default function FileItem() {
   return (
     
       <tr className="text-gray-700 dark:text-gray-400">

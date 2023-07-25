@@ -1,8 +1,8 @@
 import React from "react";
-import OrderItem from "./OrderItem";
+import FileItem from "./fileItem";
 import Link from "next/link";
 
-export default function OrderList() {
+export default function FileList() {
   return (
     <div>
       <div className="w-full overflow-hidden rounded-lg shadow-xs">
@@ -22,13 +22,8 @@ export default function OrderList() {
             </thead>
             <tbody className="bg-white divide-y">
              
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
+             <FileItem />
+           
 
            
             </tbody>

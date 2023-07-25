@@ -1,6 +1,6 @@
 import Dashboard from "@/components/Dashboard";
 import Navbar from "@/components/Navbar";
-import OrderList from "@/components/OrderList";
+import OrderList from "@/components/FileList";
 import Sidebar from "@/components/Sidebar";
 import React from "react";
 

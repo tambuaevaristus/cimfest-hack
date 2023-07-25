@@ -1,6 +1,6 @@
 import React from "react";
 import Dashboard from "./Dashboard";
-import OrderList from "./OrderList";
+import OrderList from "./FileList";
 
 export default function Body() {
   return (

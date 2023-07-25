@@ -12,7 +12,7 @@ export default function Dashboard() {
           </div>
           <div>
             <p className="mb-2 text-sm font-medium text-gray-600 ">
-              Number of Files
+              Users
             </p>
             <p className="text-lg font-semibold text-gray-700 ">12</p>
           </div>
@@ -28,7 +28,7 @@ export default function Dashboard() {
           </div>
           <div>
             <p className="mb-2 text-sm font-medium text-gray-600 ">
-              Total Ammount Spent
+              New Commands
             </p>
             <p className="text-lg font-semibold text-gray-700 ">5000frs</p>
           </div>

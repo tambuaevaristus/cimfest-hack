@@ -1,7 +1,7 @@
 import Body from "@/components/Body";
 import Dashboard from "@/components/Dashboard";
 import Navbar from "@/components/Navbar";
-import OrderList from "@/components/OrderList";
+import OrderList from "@/components/FileList";
 import Sidebar from "@/components/Sidebar";
 import PDFViewer from "@/components/file/PDFViewer";
 import Pdf from "@/components/file/PDFViewer";
@@ -11,7 +11,7 @@ import React from "react";
 const index = () => {
   return (
     <div>
-      <div className="  py-5 px-5 float-right container">
+      <div className=" bg-red-400 py-5  float-right container">
         <Dashboard />
         <OrderList />
 
