@@ -3,7 +3,7 @@ import React from "react";
 export default function FileItem() {
   return (
     
-      <tr className="text-gray-700 dark:text-gray-400">
+      <tr className="text-gray-700 dark:text-gra">
         <td className="px-3">
           <input type="checkbox" name="" id="" />
         </td>
