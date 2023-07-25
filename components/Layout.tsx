@@ -17,11 +17,11 @@ export default function Layout({ children }: any) {
         {router.asPath === "/signin" || router.asPath === "/signup" ? (
           <></>
         ) : (
-          <div className="lg:w-1/4">
+          <div className="lg:w-1/5 bg-slate-500">
             <Sidebar isNavOpen={isNavOpen} />
           </div>
         )}
-        <div className=" container mx-auto mt-[50px]">{children}</div>
+        <div className=" container mx-auto pr-5 mt-[50px]">{children}</div>
       </div>
     </div>
   );
