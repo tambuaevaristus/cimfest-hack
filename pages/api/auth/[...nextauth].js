@@ -21,15 +21,11 @@ export default NextAuth({
 
         async session({ session }) {
             if (!session) return session;
-
-            console.log('checking user on session: ', session)
-
             // connect DB
             await DB();
             // check if the user is already present or not
             const isUser = await User.findOne({ email: session?.user?.email });
             if (isUser) {
-                console.log('user already exists: ', isUser)
                 session.user._id = isUser._id;
                 session.user.profileImage = isUser.profileImage
                 session.user.role = isUser.role
@@ -39,7 +35,6 @@ export default NextAuth({
             try {
                 // create a new user
                 const userRole = await Role.findOne({ code: "user" });
-                console.log('found user role: ', userRole)
                 const user = new User({
                     email: session.user.email,
                     fullName: session.user.name,

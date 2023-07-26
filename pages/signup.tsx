@@ -11,48 +11,51 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
   const signUp = async () => {
-    const user = await fetch(
-      "/api/v1/auth/signup",
-      {
-        method: "POST",
-        mode: 'no-cors',
-        headers: {
-          "Content-type": "application/json;charset=UTF-8",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          fullName,
-          passwordConfirm: confirmPassword,
-        }),
-      }
-    )
+    setLoading(true);
+    const user = await fetch("/api/auth/signup", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-type": "application/json;charset=UTF-8",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        fullName,
+        passwordConfirm: confirmPassword,
+      }),
+    })
       .then(function (user) {
+        console.log("result from addng: ", user);
         if (!user.ok) {
           throw Error(user.statusText);
         }
         return user.json();
       })
       .then((user) => {
+        console.log("user created on the front end: ", user);
         const userData: User = {
           id: user.data.user._id,
-          gender: "",
-          phoneNumber: "",
-          image: "",
+          gender: user.data.user.gender,
+          phoneNumber: user.data.user?.phoneNumber,
+          image: user.data.user?.image,
           name: user.data.user.fullName,
           email: user.data.user.email,
-          token: user.token,
-          role: user.data.user.role.code,
+          // token: user.token,
+          role: user.data.role.code,
         };
         dispatch(addUser(userData));
-        router.push("/")
-        
+        // router.push("/")
       })
       .catch(function (error) {
         error;
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -155,10 +158,13 @@ export default function Signup() {
               </div>
 
               <button
-                className="inline-block w-full rounded-lg font-bold bg-blue-600 px-7 pb-2.5 pt-3 text-sm leading-normal text-white "
+                className={`inline-block w-full rounded-lg font-bold bg-blue-600 px-7 pb-2.5 pt-3 text-sm leading-normal text-white ${
+                  loading && "opacity-20"
+                }`}
                 onClick={signUp}
+                disabled={loading}
               >
-                Sign in
+                {loading ? "Please wait..." : "Sign up"}
               </button>
 
               <p className="text-sm text-gray-500 my-3 text-center">
