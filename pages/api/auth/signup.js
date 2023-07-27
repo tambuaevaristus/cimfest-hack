@@ -1,7 +1,6 @@
 import DB from 'lib/db'
 import User from "models/User";
 import Role from "models/Role";
-import { getSession, setSession } from 'next-auth/react'
 
 export default async function signup(req, res, next) {
     await DB()

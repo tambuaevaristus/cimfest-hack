@@ -5,7 +5,7 @@ import { getSession } from 'next-auth/react'
 export default async function login(req, res, next) {
     await DB()
     const session = await getSession({ req })
-    const { email, password } = req.body;
+    const { email, password } = JSON.parse(req.body);
 
     if (!(email && password)) {
         return next(
@@ -16,7 +16,7 @@ export default async function login(req, res, next) {
         )
     }
 
-    let user = await User.findOne({ email }).select('+password');
+    let user = await User.findOne({ email }).select('+password').populate('role');
 
     if (!(user && (await user.comparePassword(password)))) {
         return next(
@@ -28,12 +28,12 @@ export default async function login(req, res, next) {
     }
 
     user = await User.findByIdAndUpdate(user.id, { lastLogin: Date.now() })
-    session.user._id = user._id;
-    session.user.profileImage = user.profileImage
-    session.user.role = user.role
 
-    return res.status(200).json({
+    res.send({
         status: 'OK',
-        data: user
+        data: {
+            user,
+            role: user.role
+        }
     })
 }

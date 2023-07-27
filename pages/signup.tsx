@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import Link from "next/link";
@@ -6,57 +6,54 @@ import { User } from "@/types";
 import { addUser } from "@/slice/userSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
+import { signIn, useSession } from "next-auth/react";
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
   const router = useRouter();
+
+  const handleGoogleSignin = async () => {
+    signIn("google", {
+      callbackUrl: "http://localhost:3000/",
+    });
+  };
+
   const signUp = async () => {
-    setLoading(true);
-    const user = await fetch("/api/auth/signup", {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-type": "application/json;charset=UTF-8",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        fullName,
-        passwordConfirm: confirmPassword,
-      }),
-    })
-      .then(function (user) {
-        console.log("result from addng: ", user);
-        if (!user.ok) {
-          throw Error(user.statusText);
-        }
-        return user.json();
-      })
-      .then((user) => {
-        console.log("user created on the front end: ", user);
-        const userData: User = {
-          id: user.data.user._id,
-          gender: user.data.user.gender,
-          phoneNumber: user.data.user?.phoneNumber,
-          image: user.data.user?.image,
-          name: user.data.user.fullName,
-          email: user.data.user.email,
-          // token: user.token,
-          role: user.data.role.code,
-        };
-        dispatch(addUser(userData));
-        // router.push("/")
-      })
-      .catch(function (error) {
-        error;
-      })
-      .finally(() => {
-        setLoading(false);
+    try {
+      setLoading(true);
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          fullName,
+          passwordConfirm: confirmPassword,
+        }),
       });
+      if (!res.ok) {
+        throw new Error("Something went wrong, please try again");
+      }
+      const user = await res.json();
+      const status = await signIn("credentials", {
+        redirect: false,
+        email: user?.data?.user?.email,
+        password: password,
+        callbackUrl: "/",
+      });
+
+      if (status?.ok) router.push(status?.url as any);
+    } catch (error) {
+      console.log("Error siging up: ", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -83,7 +80,10 @@ export default function Signup() {
               <div className="my-5">
                 <p className="font-bold">Signin with</p>
                 <div className="flex justify-center">
-                  <button className="border w-1/3 font-bold py-2 px-4 rounded-md mr-2">
+                  <button
+                    className="border w-1/3 font-bold py-2 px-4 rounded-md mr-2"
+                    onClick={handleGoogleSignin}
+                  >
                     <FcGoogle className="mx-auto" />
                   </button>
                   <button className=" text-white w-1/3 border font-bold py-2 px-4 rounded-md mr-2">

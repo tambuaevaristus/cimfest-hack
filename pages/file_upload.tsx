@@ -2,39 +2,132 @@ import PDFViewer from "@/components/file/PDFViewer";
 import { addfile } from "@/slice/fileSlice";
 import { Command } from "@/types";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEventHandler,
+  MouseEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { BiTrash } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 // import * as pdfjs from "pdfjs-dist";
 
 import PDFDisplay from "@/components/file/PDFDisplay";
 import { RootState } from "@/store";
+import { useSession } from "next-auth/react";
+import { S3 } from "aws-sdk";
 
 // import pdfjsWorker from "pdfjs-dist/legacy/build/pdf.worker.js";
 export default function Create() {
   const [docName, setDocName] = useState("");
-  const [numberOfCopies, setNumberOfCopies] = useState();
-  const [paperType, setPaperType] = useState("");
-  const [paperSize, setPaperSize] = useState("");
-  const [orientation, setOrientation] = useState("");
-  const [printSides, setprintSides] = useState("");
-  const [printColor, setPrintColor] = useState("");
+  const [numberOfCopies, setNumberOfCopies] = useState(1);
+  const [paperType, setPaperType] = useState("Normal");
+  const [paperSize, setPaperSize] = useState("A4");
+  const [orientation, setOrientation] = useState("Potrait");
+  const [printSides, setprintSides] = useState("Recto");
+  const [printColor, setPrintColor] = useState("Black&White");
   const [paperColor, setPaperColor] = useState("");
   const [pagesToPrint, setPagesToPrint] = useState("");
   const commandList = useSelector((state: RootState) => state.file).commands;
 
   // Layout properties
-  const [pagesPerSheet, setPagesPerSheet] = useState("");
+  const [pagesPerSheet, setPagesPerSheet] = useState(1);
   const [layoutDirection, setLayoutDirection] = useState("");
-  const [printType, setPrintType] = useState("");
-  const [biding, setBiding] = useState("");
-  const [bidingType, setBidingType] = useState("");
+  const [printType, setPrintType] = useState("Plain");
+  const [biding, setBiding] = useState("No binding");
+  const [bidingType, setBidingType] = useState("No binding");
   const [extraDetails, setExtraDetails] = useState("");
+  const [filePath, setFilePath] = useState("");
   const [cost, setCost] = useState();
-  const [file, setFile] = useState("");
-  const [saveState, setSaveState] = useState(false);
+  // const [file, setFile] = useState("");
+  const [saveState, setSaveState] = useState(true);
 
   // Pdf numbering
+
+  const session = useSession();
+
+  const [file, setFile] = useState<File | null>(null);
+  const [upload, setUpload] = useState<S3.ManagedUpload | null>(null);
+  const [progress, setProgress] = useState(0);
+  const s3 = new S3({
+    accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY,
+    secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
+  });
+
+  useEffect(() => {
+    setProgress(0);
+    setUpload(null);
+  }, [file]);
+
+  const handleFileChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    e.preventDefault();
+    setFile(e?.target?.files![0]);
+  };
+
+  const handleUpload: MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault();
+    if (!file) return;
+    const BUCKET = process.env.NEXT_PUBLIC_AWS_BUCKET as string;
+    const params = {
+      Bucket: BUCKET,
+      Key: file?.name,
+      Body: file,
+    };
+    console.log(params);
+
+    try {
+      const upload = s3.upload(params);
+      setUpload(upload);
+      upload.on("httpUploadProgress", (p) => {
+        console.log(p.loaded / p.total);
+        setProgress(p.loaded / p.total);
+      });
+      const result = await upload.promise();
+      setFilePath(result?.Location);
+      const doc = {
+        name: docName,
+        paperType,
+        paperSize,
+        orientation,
+        printSides,
+        color: false,
+        pagesPerSheet,
+        printingType: printType,
+        bindingType: bidingType,
+        description: extraDetails,
+        file: filePath,
+        createdBy: session?.data?.user?._id,
+      };
+
+      const res = await fetch("/api/document/upload", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+        },
+        body: JSON.stringify(doc),
+      });
+
+      if (!res.ok) {
+        throw new Error("Error placing command, try again");
+      }
+      const docResult = await res.json();
+
+      console.log("doc result: ", docResult);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleCancel: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+    if (!upload) return;
+    upload.abort();
+    // progress.set(0);
+    setProgress(0);
+    setUpload(null);
+  };
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -57,14 +150,43 @@ export default function Create() {
   const addFile = () => {
     dispatch(addfile(fileObj));
     setSaveState(true);
-
-    // router.push("/checkout");
   };
-  const handleSummitFile = () => {
-    dispatch(addfile(fileObj));
-    setSaveState(true);
-
-    router.push("/checkout");
+  const handlePrint = () => {
+    console.log("print commant: ", {
+      name: docName,
+      paperType,
+      paperSize,
+      orientation,
+      printSides,
+      paperColor,
+      pagesPerSheet,
+      printingType: printType,
+      bindingType: bidingType,
+      description: extraDetails,
+      file: filePath,
+      createdBy: session?.data?.user?._id,
+    });
+    // fetch("/api/document/upload", {
+    //   method: "GET",
+    //   mode: "no-cors",
+    //   headers: {
+    //     "Content-type": "application/json;charset=UTF-8",
+    //   },
+    //   body: JSON.stringify({
+    //     name: docName,
+    //     paperType,
+    //     paperSize,
+    //     orientation,
+    //     printSides,
+    //     paperColor,
+    //     pagesPerSheet,
+    //     printingType: printType,
+    //     bindingType: bidingType,
+    //     description: extraDetails,
+    //     file: filePath,
+    //     createdBy: session?.data?.user?._id,
+    //   }),
+    // });
   };
   return (
     <div>
@@ -72,7 +194,8 @@ export default function Create() {
         {saveState == false ? (
           <nav className="flex px-5 py-3 text-gray-700 border border-gray-200  rounded-lg bg-green-100">
             <p className="mx-auto">
-              Tell us how you want your document to be printed by filling the form
+              Tell us how you want your document to be printed by filling the
+              form
             </p>
           </nav>
         ) : (
@@ -82,7 +205,7 @@ export default function Create() {
               {commandList?.length == 1 ? "file" : "files"} uploaded
               Successfully, You can Add to add another file or{" "}
               <button
-                onClick={handleSummitFile}
+                onClick={handlePrint}
                 className="p-2 border rounded-md bg-blue-500 text-white my-auto "
               >
                 Proceed to Payment
@@ -208,7 +331,7 @@ export default function Create() {
                         <input
                           type="radio"
                           className="form-radio h-4 w-4 text-blue-600"
-                          value="recto-recto"
+                          value="Recto"
                           name="printSides"
                           onChange={(e) => setprintSides(e.target.value)}
                         />
@@ -219,7 +342,7 @@ export default function Create() {
                           type="radio"
                           className="form-radio h-4 w-4 text-blue-600"
                           name="printSides"
-                          value="recto-veso"
+                          value="Recto Veso"
                           onChange={(e) => setprintSides(e.target.value)}
                         />
                         <span className="ml-2">Recto Veso</span>
@@ -317,7 +440,7 @@ export default function Create() {
                         <input
                           type="radio"
                           className="form-radio h-4 w-4 text-blue-600"
-                          value="plain"
+                          value="Plain"
                           name="printColor"
                           // checked={value === 'false'}
                           onChange={(e) => setPrintType(e.target.value)}
@@ -383,7 +506,7 @@ export default function Create() {
                   ></textarea>
                 </div>
               </div>
-              <div className="mb-4 md:w-2/5 rounded-lg border  rounded  pt-6 pb-8">
+              <div className="mb-4 md:w-2/5 rounded-lg border pt-6 pb-8">
                 <label className="block mb-2 text-sm  font-medium text-gray-900 dark:text-white">
                   Upload file
                 </label>
@@ -395,11 +518,14 @@ export default function Create() {
                 </div>
                 <input
                   type="file"
-                  onChange={(e) => setFile(e.target.value)}
+                  onChange={handleFileChange}
                   className="file-input file-input-ghost w-full my-auto mx-auto max-w-xs"
                 />
                 <div className="flex justify-between px-3">
-                  <button className="my-3 hover:text-blue-500">
+                  <button
+                    className="my-3 hover:text-blue-500"
+                    onClick={handleUpload}
+                  >
                     Replace file
                   </button>
                   <button my-3>
@@ -410,7 +536,6 @@ export default function Create() {
                   <div className="flex justify-between">
                     {" "}
                     <h3 className="font-bold">Summary</h3>
-                
                   </div>
                   <div className="border-t-2 border-b-2  py-3">
                     <div className="flex justify-between">
