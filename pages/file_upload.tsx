@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import PDFDisplay from "@/components/file/PDFDisplay";
 import { RootState } from "@/store";
+import FileUpload from "@/components/file/FileUpload";
 
 // import pdfjsWorker from "pdfjs-dist/legacy/build/pdf.worker.js";
 export default function Create() {
@@ -72,7 +73,8 @@ export default function Create() {
         {saveState == false ? (
           <nav className="flex px-5 py-3 text-gray-700 border border-gray-200  rounded-lg bg-green-100">
             <p className="mx-auto">
-              Tell us how you want your document to be printed by filling the form
+              Tell us how you want your document to be printed by filling the
+              form
             </p>
           </nav>
         ) : (
@@ -388,10 +390,10 @@ export default function Create() {
                   Upload file
                 </label>
                 <div className="bg-white overflow-y-scroll  w-full h-[600px] rounded-md">
-                  {/* <PDFViewer />
-                   */}
+                  {/* <PDFViewer /> */}
 
-                  <PDFDisplay />
+                  <FileUpload />
+                  {/* <PDFDisplay /> */}
                 </div>
                 <input
                   type="file"
@@ -410,7 +412,6 @@ export default function Create() {
                   <div className="flex justify-between">
                     {" "}
                     <h3 className="font-bold">Summary</h3>
-                
                   </div>
                   <div className="border-t-2 border-b-2  py-3">
                     <div className="flex justify-between">

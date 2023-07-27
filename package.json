@@ -24,6 +24,7 @@
     "mongoose-unique-validator": "^4.0.0",
     "next": "13.4.3",
     "next-auth": "^4.22.1",
+    "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^3.7.107",
     "postcss": "8.4.23",
     "react": "18.2.0",
