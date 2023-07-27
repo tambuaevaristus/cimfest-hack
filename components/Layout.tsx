@@ -13,11 +13,11 @@ export default function Layout({ children }: any) {
     <div>
       <Navbar setIsNavOpen={setIsNavOpen} />
 
-      <div className="flex w-full">
+      <div className="flex">
         {router.asPath === "/signin" || router.asPath === "/signup" ? (
           <></>
         ) : (
-          <div className="lg:w-1/5 bg-slate-500">
+          <div className="lg:w-1/5">
             <Sidebar isNavOpen={isNavOpen} />
           </div>
         )}

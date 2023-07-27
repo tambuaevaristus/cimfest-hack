@@ -1,23 +1,40 @@
-import { useEffect, useRef } from "react";
+import React, { useState } from "react";
+import { Worker, Viewer } from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import "@react-pdf-viewer/print/lib/styles/index.css";
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
-const PDFViewer: React.FC = () => {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 
-  useEffect(() => {
-    const url = "https://jeeadv.ac.in/past_qps/2017_1.pdf"; // Replace with the actual URL of the PDF
+export default function PDFViewer() {
+  const [pdfFile, setPDFFile] = useState(null);
+  const [viewPdf, setViewPdf] = useState(null);
+  const fileType = ["application/pdf"];
 
-    const proxyUrl = "https://jeeadv.ac.in/past_qps/2017_1.pdf";
-
-    if (iframeRef.current) {
-      iframeRef.current.src = proxyUrl;
-    }
-  }, []);
+  const newPlugin = defaultLayoutPlugin();
 
   return (
-    <div>
-      <iframe ref={iframeRef} width="100%" height="600px" title="PDF Viewer" />
+    <div className="container">
+      {/* <form onSubmit=>
+        <input type="file" onChange={handleChange} />
+        <button type="submit">View file</button>
+      </form> */}
+      <div className="bg-red-300">
+        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.7.107/build/pdf.worker.min.js">
+          <>
+            <Viewer
+              fileUrl="https://jeeadv.ac.in/past_qps/2017_1.pdf"
+              plugins={[newPlugin]}
+              httpHeaders={{
+                AllowedHeaders: ["*"],
+                AllowedMethods: ["GET", "POST"],
+                AllowedOrigins: ["*"],
+                ExposeHeaders: [],
+              }}
+            />
+          </>
+        </Worker>
+      </div>
     </div>
   );
-};
-
-export default PDFViewer;
+}

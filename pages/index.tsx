@@ -11,7 +11,7 @@ import React from "react";
 const index = () => {
   return (
     <div>
-      <div className=" bg-red-400 py-5  float-right container">
+      <div className="py-5  float-right container">
         <Dashboard />
         <OrderList />
 
