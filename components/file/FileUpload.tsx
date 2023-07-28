@@ -10,24 +10,25 @@ export default function FileUpload() {
 
   const [numPages, setNumPages] = useState("");
 
+
   const [url, setUrl] = React.useState("");
   const handleDivClick = () => {
-    const div = document.getElementById("my-span");
-    setNumPages(div?.innerHTML);
+    const span = document.getElementById("my-span");
+    setNumPages(span?.innerHTML);
+    console.log("Span content", span);
+    // console.log("we are in ")
+    console.log("page number ==>", pageNavigationPluginInstance.NumberOfPages);
 
-    console.log("we are in ")
-    console.log("page number ==>", parseInt(numPages));
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files: FileList = e.target?.files;
     files.length > 0 && setUrl(URL.createObjectURL(files[0]));
 
-    handleDivClick()
+
+  handleDivClick ()
   };
   // setNumPages(pageNumRef.current)
-
- 
 
   return (
     <div>
