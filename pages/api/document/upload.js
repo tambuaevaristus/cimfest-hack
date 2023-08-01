@@ -31,8 +31,6 @@ export default async function upload(req, res, next) {
         file,
         createdBy,
     }
-
-    console.log('document: ', document)
     const doc = await Document.create(document)
     res.send({
         status: 'OK',

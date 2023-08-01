@@ -30,6 +30,8 @@ export default NextAuth({
                     throw new Error("Email or password doesn't match")
                 }
 
+                console.log('user returned from sign in: ', user)
+
                 return user;
             }
         })
@@ -48,7 +50,8 @@ export default NextAuth({
             const isUser = await User.findOne({ email: session?.user?.email });
             if (isUser) {
                 session.user._id = isUser._id;
-                session.user.profileImage = isUser.profileImage
+                session.user.name = isUser?.fullName
+                session.user.image = isUser?.profileImage
                 session.user.role = isUser.role
                 return session;
             }

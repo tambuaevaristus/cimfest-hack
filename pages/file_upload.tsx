@@ -26,7 +26,7 @@ export default function Create() {
   const [paperSize, setPaperSize] = useState("A4");
   const [orientation, setOrientation] = useState("Potrait");
   const [printSides, setprintSides] = useState("Recto");
-  const [printColor, setPrintColor] = useState("Black&White");
+  const [printColor, setPrintColor] = useState(false);
   const [paperColor, setPaperColor] = useState("");
   const [pagesToPrint, setPagesToPrint] = useState("");
   const commandList = useSelector((state: RootState) => state.file).commands;
@@ -91,7 +91,7 @@ export default function Create() {
         paperSize,
         orientation,
         printSides,
-        color: false,
+        color: printColor,
         pagesPerSheet,
         printingType: printType,
         bindingType: bidingType,
@@ -166,27 +166,6 @@ export default function Create() {
       file: filePath,
       createdBy: session?.data?.user?._id,
     });
-    // fetch("/api/document/upload", {
-    //   method: "GET",
-    //   mode: "no-cors",
-    //   headers: {
-    //     "Content-type": "application/json;charset=UTF-8",
-    //   },
-    //   body: JSON.stringify({
-    //     name: docName,
-    //     paperType,
-    //     paperSize,
-    //     orientation,
-    //     printSides,
-    //     paperColor,
-    //     pagesPerSheet,
-    //     printingType: printType,
-    //     bindingType: bidingType,
-    //     description: extraDetails,
-    //     file: filePath,
-    //     createdBy: session?.data?.user?._id,
-    //   }),
-    // });
   };
   return (
     <div>
@@ -249,8 +228,8 @@ export default function Create() {
                       Pages{" "}
                     </label>
                     <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2">
-                      <option value="Landscape">All</option>
-                      <option value="Potrait">Some Pages</option>
+                      <option value="All">All</option>
+                      <option value="Some Pages">Some Pages</option>
                     </select>
                   </div>
                   <div className="md:flex justify-between my-3 py-2">
@@ -259,10 +238,10 @@ export default function Create() {
                     </label>
                     <select
                       onChange={(e: any) => setPaperType(e.target.value)}
-                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100"
+                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2"
                     >
-                      <option value="normal">Normal</option>
-                      <option value="Hard Page">Hard Page</option>
+                      <option value="Normal">Normal</option>
+                      <option value="Hard page">Hard Page</option>
                     </select>
                   </div>
                   <div className="md:flex justify-between border-b-2 border-gray-300 my-3 py-2">
@@ -271,7 +250,7 @@ export default function Create() {
                     </label>
                     <select
                       onChange={(e: any) => setPaperColor(e.target.value)}
-                      className="my-auto bg-gray-50 border-gray-300 px-2 rounded-md py-2 bg-gray-100"
+                      className="my-auto bg-gray-50 border-gray-300 px-2 rounded-md py-2"
                     >
                       <option value="white">white</option>
                       <option value="Green">Green</option>
@@ -286,7 +265,7 @@ export default function Create() {
                     </label>
                     <select
                       onChange={(e) => setPaperSize(e.target.value)}
-                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100"
+                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2"
                     >
                       <option value="A4">A4</option>
                       <option value="A3">A3</option>
@@ -303,7 +282,7 @@ export default function Create() {
                         <input
                           type="radio"
                           className="form-radio h-4 w-4 text-blue-600"
-                          value="landscape"
+                          value="Landscape"
                           name="orientation"
                           onChange={(e: any) => setOrientation(e.target.value)}
                         />
@@ -313,7 +292,7 @@ export default function Create() {
                         <input
                           type="radio"
                           className="form-radio h-4 w-4 text-blue-600"
-                          value="potrait"
+                          value="Potrait"
                           onChange={(e: any) => setOrientation(e.target.value)}
                           name="orientation"
                         />
@@ -335,7 +314,7 @@ export default function Create() {
                           name="printSides"
                           onChange={(e) => setprintSides(e.target.value)}
                         />
-                        <span className="ml-2 pr-3">Recto Recto</span>
+                        <span className="ml-2 pr-3">Recto</span>
                       </label>
                       <label className="inline-flex items-center">
                         <input
@@ -361,7 +340,7 @@ export default function Create() {
                           className="form-radio h-4 w-4 text-blue-600"
                           name="printColor"
                           value="color"
-                          onChange={(e) => setPrintColor(e.target.value)}
+                          onChange={(e) => setPrintColor(true)}
                         />
                         <span className="ml-2 pr-3">Color</span>
                       </label>
@@ -371,7 +350,7 @@ export default function Create() {
                           className="form-radio h-4 w-4 text-blue-600"
                           value="black-and-white"
                           name="printColor"
-                          onChange={(e) => setPrintColor(e.target.value)}
+                          onChange={(e) => setPrintColor(false)}
                         />
                         <span className="ml-2">Black & White</span>
                       </label>
@@ -386,8 +365,10 @@ export default function Create() {
                       Pages per sheet
                     </label>
                     <select
-                      onChange={(e) => setPagesPerSheet(e.target.value)}
-                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100"
+                      onChange={(e) =>
+                        setPagesPerSheet(parseInt(e.target.value, 10))
+                      }
+                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2"
                     >
                       <option value="1">1</option>
                       <option value="2">2</option>
@@ -400,7 +381,7 @@ export default function Create() {
                     <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Layout Direction
                     </label>
-                    <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100">
+                    <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2">
                       <option value="A4">A4</option>
                       <option value="A3">A3</option>
                       <option value="A5">A5</option>
@@ -410,7 +391,7 @@ export default function Create() {
                     <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Margin
                     </label>
-                    <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100">
+                    <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2">
                       <option value="A4">A4</option>
                       <option value="A3">A3</option>
                       <option value="A5">A5</option>
@@ -484,11 +465,11 @@ export default function Create() {
                     </label>
                     <select
                       onClick={(e: any) => setBidingType(e.target.value)}
-                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100"
+                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2"
                     >
-                      <option value="no binding">No binding</option>
-                      <option value="spiral">Spiral</option>
-                      <option value="pin">Pin</option>
+                      <option value="No binding">No binding</option>
+                      <option value="Spiral">Spiral</option>
+                      <option value="Pin">Pin</option>
                     </select>
                   </div>
                 </div>
@@ -539,8 +520,8 @@ export default function Create() {
                   </div>
                   <div className="border-t-2 border-b-2  py-3">
                     <div className="flex justify-between">
-                      <p>Document name:</p>
-                      <p>My CV</p>
+                      <p>Document name: </p>
+                      <p>{docName}</p>
                     </div>
 
                     <div className="flex justify-between">
@@ -560,7 +541,7 @@ export default function Create() {
                   </div>
                   <div>
                     <div className="flex justify-between py-2">
-                      <p className="my-auto">Document name:</p>
+                      <p className="my-auto">Document name: {docName}</p>
                       <button
                         onClick={addFile}
                         className="p-2 border rounded-md bg-blue-500 text-white my-auto "
