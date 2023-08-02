@@ -1,10 +1,63 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import Link from "next/link";
-export default function signup() {
+import { User } from "@/types";
+import { addUser } from "@/slice/userSlice";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+import { signIn, useSession } from "next-auth/react";
+export default function Signup() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleGoogleSignin = async () => {
+    signIn("google", {
+      callbackUrl: "http://localhost:3000/",
+    });
+  };
+
+  const signUp = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          fullName,
+          passwordConfirm: confirmPassword,
+        }),
+      });
+      if (!res.ok) {
+        throw new Error("Something went wrong, please try again");
+      }
+      const user = await res.json();
+      const status = await signIn("credentials", {
+        redirect: false,
+        email: user?.data?.user?.email,
+        password: password,
+        callbackUrl: "/",
+      });
+
+      if (status?.ok) router.push(status?.url as any);
+    } catch (error) {
+      console.log("Error siging up: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className=" w-5/6 mx-auto my-auto my-[40px] bg-white border ">
+    <div className=" mx-auto my-[30px] container bg-white border ">
       <div className="container h-full px-6 py-24">
         <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
           <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12">
@@ -27,7 +80,10 @@ export default function signup() {
               <div className="my-5">
                 <p className="font-bold">Signin with</p>
                 <div className="flex justify-center">
-                  <button className="border w-1/3 font-bold py-2 px-4 rounded-md mr-2">
+                  <button
+                    className="border w-1/3 font-bold py-2 px-4 rounded-md mr-2"
+                    onClick={handleGoogleSignin}
+                  >
                     <FcGoogle className="mx-auto" />
                   </button>
                   <button className=" text-white w-1/3 border font-bold py-2 px-4 rounded-md mr-2">
@@ -49,7 +105,8 @@ export default function signup() {
                 <input
                   type="text"
                   className="peer block min-h-[auto] w-full border rounded px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                  placeholder="Enter Username"
+                  placeholder="Enter Name"
+                  onChange={(e) => setFullName(e.target.value)}
                 />
               </div>
               <div className="relative mb-6" data-te-input-wrapper-init>
@@ -59,6 +116,7 @@ export default function signup() {
                   className="peer block min-h-[auto] w-full border rounded px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                   id="exampleFormControlInput3"
                   placeholder="Email address"
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 
@@ -67,8 +125,17 @@ export default function signup() {
                 <input
                   type="password"
                   className="peer block min-h-[auto] w-full border rounded px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                  id="exampleFormControlInput33"
                   placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div className="relative mb-6" data-te-input-wrapper-init>
+                <label className="">Confirm Password</label>
+                <input
+                  type="password"
+                  className="peer block min-h-[auto] w-full border rounded px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                  placeholder="Password"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
               </div>
 
@@ -90,13 +157,19 @@ export default function signup() {
                 </a>
               </div>
 
-              <button className="inline-block w-full rounded-lg font-bold bg-blue-600 px-7 pb-2.5 pt-3 text-sm leading-normal text-white ">
-                Sign in
+              <button
+                className={`inline-block w-full rounded-lg font-bold bg-blue-600 px-7 pb-2.5 pt-3 text-sm leading-normal text-white ${
+                  loading && "opacity-20"
+                }`}
+                onClick={signUp}
+                disabled={loading}
+              >
+                {loading ? "Please wait..." : "Sign up"}
               </button>
 
               <p className="text-sm text-gray-500 my-3 text-center">
-                Already have an account?{" "}
-                <Link href="/login" className="text-blue-500">
+                Already have an account?
+                <Link href="/signin" className="text-blue-500">
                   Signin
                 </Link>
               </p>
