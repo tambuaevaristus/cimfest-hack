@@ -1,6 +1,7 @@
 import PDFViewer from "@/components/file/PDFViewer";
 import { addfile } from "@/slice/fileSlice";
 import { Command } from "@/types";
+import { PDFDocument } from "pdf-lib";
 import { useRouter } from "next/router";
 import React, {
   ChangeEventHandler,
@@ -11,9 +12,6 @@ import React, {
 } from "react";
 import { BiTrash } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-// import * as pdfjs from "pdfjs-dist";
-
-import PDFDisplay from "@/components/file/PDFDisplay";
 import { RootState } from "@/store";
 import { useSession } from "next-auth/react";
 import { S3 } from "aws-sdk";
@@ -43,11 +41,13 @@ export default function Create() {
   // const [file, setFile] = useState("");
   const [saveState, setSaveState] = useState(true);
 
-  // Pdf numbering
+
+  const [file, setFile] = useState<File | null>(null);
+
+ 
 
   const session = useSession();
 
-  const [file, setFile] = useState<File | null>(null);
   const [upload, setUpload] = useState<S3.ManagedUpload | null>(null);
   const [progress, setProgress] = useState(0);
   const s3 = new S3({
@@ -167,6 +167,28 @@ export default function Create() {
       createdBy: session?.data?.user?._id,
     });
   };
+
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files: FileList = e?.target?.files;
+    const numPages = await getNumPages(files[0]);
+    console.log("Number of pages ===>", numPages.length);
+  };
+
+  const readFile = (file: any) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsArrayBuffer(file);
+    });
+  };
+
+  const getNumPages = async (file: any) => {
+    const arrayBuffer = await readFile(file);
+    const pdf = await PDFDocument.load(arrayBuffer);
+    return pdf.getPages();
+  };
+
   return (
     <div>
       <div className="container mx-auto mt-[65px] gap-2 md:p-5">
@@ -492,10 +514,9 @@ export default function Create() {
                   Upload file
                 </label>
                 <div className="bg-white overflow-y-scroll  w-full h-[600px] rounded-md">
-                  {/* <PDFViewer />
-                   */}
-
-                  <PDFDisplay />
+                  <div>
+                   
+                  </div>
                 </div>
                 <input
                   type="file"
