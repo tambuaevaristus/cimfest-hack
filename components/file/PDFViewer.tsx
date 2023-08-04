@@ -4,14 +4,14 @@ import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/print/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
-import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+// import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 
 export default function PDFViewer() {
   const [pdfFile, setPDFFile] = useState(null);
   const [viewPdf, setViewPdf] = useState(null);
   const fileType = ["application/pdf"];
 
-  const newPlugin = defaultLayoutPlugin();
+//   const newPlugin = defaultLayoutPlugin();
 
   return (
     <div className="container">
@@ -24,7 +24,7 @@ export default function PDFViewer() {
           <>
             <Viewer
               fileUrl="https://jeeadv.ac.in/past_qps/2017_1.pdf"
-              plugins={[newPlugin]}
+            //   plugins={[newPlugin]}
               httpHeaders={{
                 AllowedHeaders: ["*"],
                 AllowedMethods: ["GET", "POST"],

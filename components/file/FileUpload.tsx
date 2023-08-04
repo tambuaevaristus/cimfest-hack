@@ -1,5 +1,4 @@
 import { Viewer, Worker } from "@react-pdf-viewer/core";
-import { PDFDocument } from "pdf-lib";
 import React, { useRef, useState } from "react";
 import { pageNavigationPlugin } from "@react-pdf-viewer/page-navigation";
 
@@ -12,46 +11,12 @@ export default function FileUpload() {
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files: FileList = e?.target?.files;
     files.length > 0 && setUrl(URL.createObjectURL(files[0]));
-    const numPages = await getNumPages(files[0]);
-    console.log("Number of pages ===>", numPages.length);
-    // handleDivClick();
   };
-  // setNumPages(pageNumRef.current)
-
-  // const readFile = (file: any) => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-
-  //     reader.onload = () => resolve(reader.result);
-  //     reader.onerror = (error) => reject(error);
-
-  //     reader.readAsArrayBuffer(file);
-  //   });
-  // };
-
-  // const getNumPages = async (file: any) => {
-  //   const arrayBuffer = await readFile(file);
-
-  //   const pdf = await PDFDocument.load(arrayBuffer);
-
-  //   return pdf.getPages();
-  // };
+ 
   return (
     <div>
       <div className="bg-gray-400 h-10 p-2  w- z-20">
         <input type="file" accept=".pdf" onChange={onChange} />
-        <CurrentPageLabel>
-          {(props: any) => (
-            <span>
-              {`${props.currentPage + 1} of`}{" "}
-              <span
-                ref={pageNumRef}
-                id="my-span"
-                // onClick={handleDivClick}
-              >{`${props.numberOfPages}`}</span>
-            </span>
-          )}
-        </CurrentPageLabel>
       </div>
       <div>
         {url ? (
