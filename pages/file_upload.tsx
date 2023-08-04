@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { useSession } from "next-auth/react";
 import { S3 } from "aws-sdk";
+import FileUpload from "@/components/file/FileUpload";
 
 // import pdfjsWorker from "pdfjs-dist/legacy/build/pdf.worker.js";
 export default function Create() {
@@ -40,11 +41,14 @@ export default function Create() {
   const [cost, setCost] = useState();
   // const [file, setFile] = useState("");
   const [saveState, setSaveState] = useState(true);
-
-
   const [file, setFile] = useState<File | null>(null);
+  // Show file
 
- 
+  const [url, setUrl] = React.useState("");
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files: FileList = e?.target?.files;
+    files.length > 0 && setUrl(URL.createObjectURL(files[0]));
+  };
 
   const session = useSession();
 
@@ -63,6 +67,8 @@ export default function Create() {
   const handleFileChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     e.preventDefault();
     setFile(e?.target?.files![0]);
+    const files: any = e?.target?.files;
+    files?.length > 0 && setUrl(URL.createObjectURL(files[0]));
   };
 
   const handleUpload: MouseEventHandler<HTMLButtonElement> = async (e) => {
@@ -166,12 +172,6 @@ export default function Create() {
       file: filePath,
       createdBy: session?.data?.user?._id,
     });
-  };
-
-  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files: FileList = e?.target?.files;
-    const numPages = await getNumPages(files[0]);
-    console.log("Number of pages ===>", numPages.length);
   };
 
   const readFile = (file: any) => {
@@ -515,15 +515,18 @@ export default function Create() {
                 </label>
                 <div className="bg-white overflow-y-scroll  w-full h-[600px] rounded-md">
                   <div>
-                    <PDFViewer />
-                   
+                    <FileUpload url={url} />
                   </div>
                 </div>
                 <input
                   type="file"
                   onChange={handleFileChange}
                   className="file-input file-input-ghost w-full my-auto mx-auto max-w-xs"
+                  accept=".pdf"
                 />
+                {/* <div className="bg-gray-400 h-10 p-2  w- z-20">
+        <input type="file" onChange={onChange} />
+      </div> */}
                 <div className="flex justify-between px-3">
                   <button
                     className="my-3 hover:text-blue-500"
