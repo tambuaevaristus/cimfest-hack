@@ -10,60 +10,39 @@ import { signIn, useSession } from "next-auth/react";
 export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const dispatch = useDispatch();
   const session = useSession();
 
-  console.log("session on signin page: ", session);
 
-  useEffect(() => {
-    if (session?.data?.user) {
-      dispatch(addUser(session?.data?.user));
-      router.push("/");
-    }
-  }, [session, router, dispatch]);
+  const handleGoogleSignin = async () => {
+    signIn("google", {
+      callbackUrl: "http://localhost:3000/",
+    });
+  };
 
-  const login = async () => {
-    await fetch("https://upsolution-api.onrender.com/api/v1/auth/login", {
-      method: "POST",
-      mode: "no-cors",
-
-      headers: {
-        "Content-type": "application/json;charset=UTF-8",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    })
-      .then(function (user) {
-        if (!user.ok) {
-          throw Error(user.statusText);
-        }
-        return user.json();
-      })
-      .then((user) => {
-        const userData: User = {
-          id: user.data.user._id,
-          gender: "",
-          phoneNumber: "",
-          image: "",
-          name: user.data.user.fullName,
-          email: user.data.user.email,
-          token: user.token,
-          role: user.data.user.role.code,
-        };
-        dispatch(addUser(userData));
-        router.push("/");
-      })
-      .catch(function (error) {
-        error;
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+      const status = await signIn("credentials", {
+        redirect: false,
+        email: email,
+        password: password,
+        callbackUrl: "/",
       });
+
+      if (status?.ok) router.push(status?.url as any);
+    } catch (error) {
+      console.log("Error logging in: ", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className=" mx-auto my-[30px] my-[40px] container bg-white border ">
+    <div className=" mx-auto my-[30px] container bg-white border ">
       <div className="container h-full px-6 py-24">
         <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
           <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12">
@@ -89,7 +68,7 @@ export default function Signin() {
                 <p className="font-bold">Signin with</p>
                 <div className="flex justify-center">
                   <button
-                    onClick={() => signIn("google")}
+                    onClick={handleGoogleSignin}
                     className="border w-1/3 font-bold py-2 px-4 rounded-md mr-2"
                   >
                     <FcGoogle className="mx-auto" />
@@ -120,7 +99,7 @@ export default function Signin() {
               </div>
 
               <div className="relative mb-6" data-te-input-wrapper-init>
-                <label className="">Email Address</label>
+                <label className="">Password</label>
                 <input
                   type="password"
                   className="peer block min-h-[auto] w-full border rounded px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
@@ -149,10 +128,13 @@ export default function Signin() {
               </div>
 
               <button
-                className="inline-block w-full rounded-lg font-bold bg-blue-600 px-7 pb-2.5 pt-3 text-sm leading-normal text-white "
-                onClick={login}
+                className={`inline-block w-full rounded-lg font-bold bg-blue-600 px-7 pb-2.5 pt-3 text-sm leading-normal text-white ${
+                  loading && "opacity-20"
+                }`}
+                onClick={handleLogin}
+                disabled={loading}
               >
-                Sign in
+                {loading ? "Please wait..." : "Sign in"}
               </button>
 
               <p className="text-sm text-gray-500 my-3 text-center">

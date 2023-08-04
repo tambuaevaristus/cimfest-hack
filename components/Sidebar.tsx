@@ -4,10 +4,10 @@ import { BiHelpCircle, BiHome, BiLogOut, BiUser } from "react-icons/bi";
 import { BsCreditCard2Front } from "react-icons/bs";
 import Navbar from "./Navbar";
 import Link from "next/link";
-import userSlice from "@/slice/userSlice";
-import { RootState } from "@/store";
+// import userSlice from "@/slice/userSlice";
 import { useSelector } from "react-redux";
 import { signOut } from "next-auth/react";
+import { RootState } from "@/store";
 
 export default function Sidebar({ isNavOpen }: any) {
   const userInfo = useSelector((state: RootState) => state.user);

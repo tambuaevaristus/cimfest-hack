@@ -1,23 +1,28 @@
-import PDFViewer from "@/components/file/PDFViewer";
 import { addfile } from "@/slice/fileSlice";
 import { Command } from "@/types";
+import { PDFDocument } from "pdf-lib";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEventHandler,
+  MouseEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { BiTrash } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-// import * as pdfjs from "pdfjs-dist";
-
-import PDFDisplay from "@/components/file/PDFDisplay";
 import { RootState } from "@/store";
+import { useSession } from "next-auth/react";
+import { S3 } from "aws-sdk";
+import FileUpload from "@/components/file/FileUpload";
 
-// import pdfjsWorker from "pdfjs-dist/legacy/build/pdf.worker.js";
 export default function Create() {
   const [docName, setDocName] = useState("");
-  const [numberOfCopies, setNumberOfCopies] = useState();
-  const [paperType, setPaperType] = useState("");
-  const [paperSize, setPaperSize] = useState("");
-  const [orientation, setOrientation] = useState("");
-  const [printSides, setprintSides] = useState("");
+  const [numberOfCopies, setNumberOfCopies] = useState("");
+  const [paperType, setPaperType] = useState("Normal");
+  const [paperSize, setPaperSize] = useState("A4");
+  const [orientation, setOrientation] = useState("Potrait");
+  const [printSides, setprintSides] = useState("Recto");
   const [printColor, setPrintColor] = useState("");
   const [paperColor, setPaperColor] = useState("");
   const [pagesToPrint, setPagesToPrint] = useState("");
@@ -26,15 +31,104 @@ export default function Create() {
   // Layout properties
   const [pagesPerSheet, setPagesPerSheet] = useState("");
   const [layoutDirection, setLayoutDirection] = useState("");
-  const [printType, setPrintType] = useState("");
-  const [biding, setBiding] = useState("");
-  const [bidingType, setBidingType] = useState("");
+  const [printType, setPrintType] = useState("Plain");
+  const [biding, setBiding] = useState("No binding");
+  const [bidingType, setBidingType] = useState("No binding");
   const [extraDetails, setExtraDetails] = useState("");
+  const [filePath, setFilePath] = useState("");
   const [cost, setCost] = useState();
-  const [file, setFile] = useState("");
-  const [saveState, setSaveState] = useState(false);
+  // const [file, setFile] = useState("");
+  const [saveState, setSaveState] = useState(true);
+  const [file, setFile] = useState<File | null>(null);
+  // Show file
 
-  // Pdf numbering
+  const [url, setUrl] = React.useState("");
+ 
+
+  const session = useSession();
+
+  const [upload, setUpload] = useState<S3.ManagedUpload | null>(null);
+  const [progress, setProgress] = useState(0);
+  const s3 = new S3({
+    accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY,
+    secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
+  });
+
+  useEffect(() => {
+    setProgress(0);
+    setUpload(null);
+  }, [file]);
+
+  const handleFileChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    e.preventDefault();
+    setFile(e?.target?.files![0]);
+    const files: any = e?.target?.files;
+    files?.length > 0 && setUrl(URL.createObjectURL(files[0]));
+  };
+
+  const handleUpload: MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault();
+    if (!file) return;
+    const BUCKET = process.env.NEXT_PUBLIC_AWS_BUCKET as string;
+    const params = {
+      Bucket: BUCKET,
+      Key: file?.name,
+      Body: file,
+    };
+    console.log(params);
+
+    try {
+      const upload = s3.upload(params);
+      setUpload(upload);
+      upload.on("httpUploadProgress", (p) => {
+        console.log(p.loaded / p.total);
+        setProgress(p.loaded / p.total);
+      });
+      const result = await upload.promise();
+      setFilePath(result?.Location);
+      const doc = {
+        name: docName,
+        paperType,
+        paperSize,
+        orientation,
+        printSides,
+        color: printColor,
+        pagesPerSheet,
+        printingType: printType,
+        bindingType: bidingType,
+        description: extraDetails,
+        file: filePath,
+        createdBy: session?.data?.user?.name,
+      };
+
+      const res = await fetch("/api/document/upload", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-type": "application/json;charset=UTF-8",
+        },
+        body: JSON.stringify(doc),
+      });
+
+      if (!res.ok) {
+        throw new Error("Error placing command, try again");
+      }
+      const docResult = await res.json();
+
+      console.log("doc result: ", docResult);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleCancel: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+    if (!upload) return;
+    upload.abort();
+    // progress.set(0);
+    setProgress(0);
+    setUpload(null);
+  };
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -57,22 +151,48 @@ export default function Create() {
   const addFile = () => {
     dispatch(addfile(fileObj));
     setSaveState(true);
-
-    // router.push("/checkout");
   };
-  const handleSummitFile = () => {
-    dispatch(addfile(fileObj));
-    setSaveState(true);
-
-    router.push("/checkout");
+  const handlePrint = () => {
+    router.push('/checkout')
+    console.log("print commant: ", {
+      name: docName,
+      paperType,
+      paperSize,
+      orientation,
+      printSides,
+      paperColor,
+      pagesPerSheet,
+      printingType: printType,
+      bindingType: bidingType,
+      description: extraDetails,
+      file: filePath,
+      createdBy: session?.data?.user?.name,
+    });
   };
+
+  const readFile = (file: any) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsArrayBuffer(file);
+    });
+  };
+
+  const getNumPages = async (file: any) => {
+    const arrayBuffer: any = await readFile(file);
+    const pdf = await PDFDocument.load(arrayBuffer);
+    return pdf.getPages();
+  };
+
   return (
     <div>
       <div className="container mx-auto mt-[65px] gap-2 md:p-5">
         {saveState == false ? (
           <nav className="flex px-5 py-3 text-gray-700 border border-gray-200  rounded-lg bg-green-100">
             <p className="mx-auto">
-              Tell us how you want your document to be printed by filling the form
+              Tell us how you want your document to be printed by filling the
+              form
             </p>
           </nav>
         ) : (
@@ -82,7 +202,7 @@ export default function Create() {
               {commandList?.length == 1 ? "file" : "files"} uploaded
               Successfully, You can Add to add another file or{" "}
               <button
-                onClick={handleSummitFile}
+                onClick={handlePrint}
                 className="p-2 border rounded-md bg-blue-500 text-white my-auto "
               >
                 Proceed to Payment
@@ -126,8 +246,8 @@ export default function Create() {
                       Pages{" "}
                     </label>
                     <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2">
-                      <option value="Landscape">All</option>
-                      <option value="Potrait">Some Pages</option>
+                      <option value="All">All</option>
+                      <option value="Some Pages">Some Pages</option>
                     </select>
                   </div>
                   <div className="md:flex justify-between my-3 py-2">
@@ -136,10 +256,10 @@ export default function Create() {
                     </label>
                     <select
                       onChange={(e: any) => setPaperType(e.target.value)}
-                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100"
+                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2"
                     >
-                      <option value="normal">Normal</option>
-                      <option value="Hard Page">Hard Page</option>
+                      <option value="Normal">Normal</option>
+                      <option value="Hard page">Hard Page</option>
                     </select>
                   </div>
                   <div className="md:flex justify-between border-b-2 border-gray-300 my-3 py-2">
@@ -148,7 +268,7 @@ export default function Create() {
                     </label>
                     <select
                       onChange={(e: any) => setPaperColor(e.target.value)}
-                      className="my-auto bg-gray-50 border-gray-300 px-2 rounded-md py-2 bg-gray-100"
+                      className="my-auto bg-gray-50 border-gray-300 px-2 rounded-md py-2"
                     >
                       <option value="white">white</option>
                       <option value="Green">Green</option>
@@ -163,7 +283,7 @@ export default function Create() {
                     </label>
                     <select
                       onChange={(e) => setPaperSize(e.target.value)}
-                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100"
+                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2"
                     >
                       <option value="A4">A4</option>
                       <option value="A3">A3</option>
@@ -180,7 +300,7 @@ export default function Create() {
                         <input
                           type="radio"
                           className="form-radio h-4 w-4 text-blue-600"
-                          value="landscape"
+                          value="Landscape"
                           name="orientation"
                           onChange={(e: any) => setOrientation(e.target.value)}
                         />
@@ -190,7 +310,7 @@ export default function Create() {
                         <input
                           type="radio"
                           className="form-radio h-4 w-4 text-blue-600"
-                          value="potrait"
+                          value="Potrait"
                           onChange={(e: any) => setOrientation(e.target.value)}
                           name="orientation"
                         />
@@ -208,18 +328,18 @@ export default function Create() {
                         <input
                           type="radio"
                           className="form-radio h-4 w-4 text-blue-600"
-                          value="recto-recto"
+                          value="Recto"
                           name="printSides"
                           onChange={(e) => setprintSides(e.target.value)}
                         />
-                        <span className="ml-2 pr-3">Recto Recto</span>
+                        <span className="ml-2 pr-3">Recto</span>
                       </label>
                       <label className="inline-flex items-center">
                         <input
                           type="radio"
                           className="form-radio h-4 w-4 text-blue-600"
                           name="printSides"
-                          value="recto-veso"
+                          value="Recto Veso"
                           onChange={(e) => setprintSides(e.target.value)}
                         />
                         <span className="ml-2">Recto Veso</span>
@@ -238,7 +358,7 @@ export default function Create() {
                           className="form-radio h-4 w-4 text-blue-600"
                           name="printColor"
                           value="color"
-                          onChange={(e) => setPrintColor(e.target.value)}
+                          onChange={(e) => setPrintColor("true")}
                         />
                         <span className="ml-2 pr-3">Color</span>
                       </label>
@@ -248,7 +368,7 @@ export default function Create() {
                           className="form-radio h-4 w-4 text-blue-600"
                           value="black-and-white"
                           name="printColor"
-                          onChange={(e) => setPrintColor(e.target.value)}
+                          onChange={(e) => setPrintColor("false")}
                         />
                         <span className="ml-2">Black & White</span>
                       </label>
@@ -263,8 +383,12 @@ export default function Create() {
                       Pages per sheet
                     </label>
                     <select
-                      onChange={(e) => setPagesPerSheet(e.target.value)}
-                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100"
+                      onChange={(e) =>
+                        // setPagesPerSheet(parseInt(e.target.value, 10))
+                        setPagesPerSheet(e.target.value)
+
+                      }
+                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2"
                     >
                       <option value="1">1</option>
                       <option value="2">2</option>
@@ -277,7 +401,7 @@ export default function Create() {
                     <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Layout Direction
                     </label>
-                    <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100">
+                    <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2">
                       <option value="A4">A4</option>
                       <option value="A3">A3</option>
                       <option value="A5">A5</option>
@@ -287,7 +411,7 @@ export default function Create() {
                     <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Margin
                     </label>
-                    <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100">
+                    <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2">
                       <option value="A4">A4</option>
                       <option value="A3">A3</option>
                       <option value="A5">A5</option>
@@ -317,7 +441,7 @@ export default function Create() {
                         <input
                           type="radio"
                           className="form-radio h-4 w-4 text-blue-600"
-                          value="plain"
+                          value="Plain"
                           name="printColor"
                           // checked={value === 'false'}
                           onChange={(e) => setPrintType(e.target.value)}
@@ -361,11 +485,11 @@ export default function Create() {
                     </label>
                     <select
                       onClick={(e: any) => setBidingType(e.target.value)}
-                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2 bg-gray-100"
+                      className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2"
                     >
-                      <option value="no binding">No binding</option>
-                      <option value="spiral">Spiral</option>
-                      <option value="pin">Pin</option>
+                      <option value="No binding">No binding</option>
+                      <option value="Spiral">Spiral</option>
+                      <option value="Pin">Pin</option>
                     </select>
                   </div>
                 </div>
@@ -383,23 +507,29 @@ export default function Create() {
                   ></textarea>
                 </div>
               </div>
-              <div className="mb-4 md:w-2/5 rounded-lg border  rounded  pt-6 pb-8">
+              <div className="mb-4 md:w-2/5 rounded-lg border pt-6 pb-8">
                 <label className="block mb-2 text-sm  font-medium text-gray-900 dark:text-white">
                   Upload file
                 </label>
                 <div className="bg-white overflow-y-scroll  w-full h-[600px] rounded-md">
-                  {/* <PDFViewer />
-                   */}
-
-                  <PDFDisplay />
+                  <div>
+                    <FileUpload url={url} />
+                  </div>
                 </div>
                 <input
                   type="file"
-                  onChange={(e) => setFile(e.target.value)}
+                  onChange={handleFileChange}
                   className="file-input file-input-ghost w-full my-auto mx-auto max-w-xs"
+                  accept=".pdf"
                 />
+                {/* <div className="bg-gray-400 h-10 p-2  w- z-20">
+        <input type="file" onChange={onChange} />
+      </div> */}
                 <div className="flex justify-between px-3">
-                  <button className="my-3 hover:text-blue-500">
+                  <button
+                    className="my-3 hover:text-blue-500"
+                    onClick={handleUpload}
+                  >
                     Replace file
                   </button>
                   <button my-3>
@@ -410,12 +540,11 @@ export default function Create() {
                   <div className="flex justify-between">
                     {" "}
                     <h3 className="font-bold">Summary</h3>
-                
                   </div>
                   <div className="border-t-2 border-b-2  py-3">
                     <div className="flex justify-between">
-                      <p>Document name:</p>
-                      <p>My CV</p>
+                      <p>Document name: </p>
+                      <p>{docName}</p>
                     </div>
 
                     <div className="flex justify-between">
@@ -435,7 +564,7 @@ export default function Create() {
                   </div>
                   <div>
                     <div className="flex justify-between py-2">
-                      <p className="my-auto">Document name:</p>
+                      <p className="my-auto">Document name: {docName}</p>
                       <button
                         onClick={addFile}
                         className="p-2 border rounded-md bg-blue-500 text-white my-auto "

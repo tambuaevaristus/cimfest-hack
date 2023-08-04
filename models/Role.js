@@ -26,4 +26,4 @@ roleSchema.pre("save", function (next) {
     next();
 });
 
-export default models ? models.Role || model('Role', roleSchema) : model('User', roleSchema)
+export default models ? models.Role || model('Role', roleSchema) : model('Role', roleSchema)

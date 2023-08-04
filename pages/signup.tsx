@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import Link from "next/link";
@@ -6,19 +6,27 @@ import { User } from "@/types";
 import { addUser } from "@/slice/userSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
+import { signIn, useSession } from "next-auth/react";
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const handleGoogleSignin = async () => {
+    signIn("google", {
+      callbackUrl: "http://localhost:3000/",
+    });
+  };
+
   const signUp = async () => {
-    const user = await fetch(
-      "/api/v1/auth/signup",
-      {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/auth/signup", {
         method: "POST",
-        mode: 'no-cors',
+        mode: "no-cors",
         headers: {
           "Content-type": "application/json;charset=UTF-8",
         },
@@ -28,36 +36,28 @@ export default function Signup() {
           fullName,
           passwordConfirm: confirmPassword,
         }),
-      }
-    )
-      .then(function (user) {
-        if (!user.ok) {
-          throw Error(user.statusText);
-        }
-        return user.json();
-      })
-      .then((user) => {
-        const userData: User = {
-          id: user.data.user._id,
-          gender: "",
-          phoneNumber: "",
-          image: "",
-          name: user.data.user.fullName,
-          email: user.data.user.email,
-          token: user.token,
-          role: user.data.user.role.code,
-        };
-        dispatch(addUser(userData));
-        router.push("/")
-        
-      })
-      .catch(function (error) {
-        error;
       });
+      if (!res.ok) {
+        throw new Error("Something went wrong, please try again");
+      }
+      const user = await res.json();
+      const status = await signIn("credentials", {
+        redirect: false,
+        email: user?.data?.user?.email,
+        password: password,
+        callbackUrl: "/",
+      });
+
+      if (status?.ok) router.push(status?.url as any);
+    } catch (error) {
+      console.log("Error siging up: ", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className=" mx-auto my-[30px] my-[40px] container bg-white border ">
+    <div className=" mx-auto my-[30px] container bg-white border ">
       <div className="container h-full px-6 py-24">
         <div className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
           <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12">
@@ -80,7 +80,10 @@ export default function Signup() {
               <div className="my-5">
                 <p className="font-bold">Signin with</p>
                 <div className="flex justify-center">
-                  <button className="border w-1/3 font-bold py-2 px-4 rounded-md mr-2">
+                  <button
+                    className="border w-1/3 font-bold py-2 px-4 rounded-md mr-2"
+                    onClick={handleGoogleSignin}
+                  >
                     <FcGoogle className="mx-auto" />
                   </button>
                   <button className=" text-white w-1/3 border font-bold py-2 px-4 rounded-md mr-2">
@@ -155,10 +158,13 @@ export default function Signup() {
               </div>
 
               <button
-                className="inline-block w-full rounded-lg font-bold bg-blue-600 px-7 pb-2.5 pt-3 text-sm leading-normal text-white "
+                className={`inline-block w-full rounded-lg font-bold bg-blue-600 px-7 pb-2.5 pt-3 text-sm leading-normal text-white ${
+                  loading && "opacity-20"
+                }`}
                 onClick={signUp}
+                disabled={loading}
               >
-                Sign in
+                {loading ? "Please wait..." : "Sign up"}
               </button>
 
               <p className="text-sm text-gray-500 my-3 text-center">

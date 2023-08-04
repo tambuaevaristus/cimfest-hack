@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 import User from "models/User";
 import DB from "lib/db";
 import Role from "models/Role";
@@ -13,6 +14,27 @@ export default NextAuth({
                 timeout: 40000,
             },
         }),
+        CredentialsProvider({
+            name: 'Credentials',
+            async authorize(credentials, req) {
+                await DB()
+
+                const user = await User.findOne({ email: credentials.email }).select('+password').populate('role')
+
+                if (!user) {
+                    throw new Error('No user found with the email, please signup')
+                }
+                const correct = await user.comparePassword(credentials.password)
+
+                if (!correct) {
+                    throw new Error("Email or password doesn't match")
+                }
+
+                console.log('user returned from sign in: ', user)
+
+                return user;
+            }
+        })
     ],
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
@@ -20,18 +42,16 @@ export default NextAuth({
         },
 
         async session({ session }) {
+            console.log('checking session: ', session)
             if (!session) return session;
-
-            console.log('checking user on session: ', session)
-
             // connect DB
             await DB();
             // check if the user is already present or not
             const isUser = await User.findOne({ email: session?.user?.email });
             if (isUser) {
-                console.log('user already exists: ', isUser)
                 session.user._id = isUser._id;
-                session.user.profileImage = isUser.profileImage
+                session.user.name = isUser?.fullName
+                session.user.image = isUser?.profileImage
                 session.user.role = isUser.role
                 return session;
             }
@@ -39,7 +59,6 @@ export default NextAuth({
             try {
                 // create a new user
                 const userRole = await Role.findOne({ code: "user" });
-                console.log('found user role: ', userRole)
                 const user = new User({
                     email: session.user.email,
                     fullName: session.user.name,
@@ -49,8 +68,6 @@ export default NextAuth({
                 const userCreated = await user.save({ validateBeforeSave: false });
 
                 session.user._id = userCreated._id;
-
-                console.log('session at the end: ', session)
                 return session;
             } catch (error) {
                 console.log('error creating user: ', error)
