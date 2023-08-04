@@ -1,4 +1,3 @@
-import PDFViewer from "@/components/file/PDFViewer";
 import { addfile } from "@/slice/fileSlice";
 import { Command } from "@/types";
 import { PDFDocument } from "pdf-lib";
@@ -17,21 +16,20 @@ import { useSession } from "next-auth/react";
 import { S3 } from "aws-sdk";
 import FileUpload from "@/components/file/FileUpload";
 
-// import pdfjsWorker from "pdfjs-dist/legacy/build/pdf.worker.js";
 export default function Create() {
   const [docName, setDocName] = useState("");
-  const [numberOfCopies, setNumberOfCopies] = useState(1);
+  const [numberOfCopies, setNumberOfCopies] = useState("");
   const [paperType, setPaperType] = useState("Normal");
   const [paperSize, setPaperSize] = useState("A4");
   const [orientation, setOrientation] = useState("Potrait");
   const [printSides, setprintSides] = useState("Recto");
-  const [printColor, setPrintColor] = useState(false);
+  const [printColor, setPrintColor] = useState("");
   const [paperColor, setPaperColor] = useState("");
   const [pagesToPrint, setPagesToPrint] = useState("");
   const commandList = useSelector((state: RootState) => state.file).commands;
 
   // Layout properties
-  const [pagesPerSheet, setPagesPerSheet] = useState(1);
+  const [pagesPerSheet, setPagesPerSheet] = useState("");
   const [layoutDirection, setLayoutDirection] = useState("");
   const [printType, setPrintType] = useState("Plain");
   const [biding, setBiding] = useState("No binding");
@@ -45,10 +43,7 @@ export default function Create() {
   // Show file
 
   const [url, setUrl] = React.useState("");
-  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files: FileList = e?.target?.files;
-    files.length > 0 && setUrl(URL.createObjectURL(files[0]));
-  };
+ 
 
   const session = useSession();
 
@@ -103,7 +98,7 @@ export default function Create() {
         bindingType: bidingType,
         description: extraDetails,
         file: filePath,
-        createdBy: session?.data?.user?._id,
+        createdBy: session?.data?.user?.name,
       };
 
       const res = await fetch("/api/document/upload", {
@@ -158,6 +153,7 @@ export default function Create() {
     setSaveState(true);
   };
   const handlePrint = () => {
+    router.push('/checkout')
     console.log("print commant: ", {
       name: docName,
       paperType,
@@ -170,7 +166,7 @@ export default function Create() {
       bindingType: bidingType,
       description: extraDetails,
       file: filePath,
-      createdBy: session?.data?.user?._id,
+      createdBy: session?.data?.user?.name,
     });
   };
 
@@ -184,7 +180,7 @@ export default function Create() {
   };
 
   const getNumPages = async (file: any) => {
-    const arrayBuffer = await readFile(file);
+    const arrayBuffer: any = await readFile(file);
     const pdf = await PDFDocument.load(arrayBuffer);
     return pdf.getPages();
   };
@@ -362,7 +358,7 @@ export default function Create() {
                           className="form-radio h-4 w-4 text-blue-600"
                           name="printColor"
                           value="color"
-                          onChange={(e) => setPrintColor(true)}
+                          onChange={(e) => setPrintColor("true")}
                         />
                         <span className="ml-2 pr-3">Color</span>
                       </label>
@@ -372,7 +368,7 @@ export default function Create() {
                           className="form-radio h-4 w-4 text-blue-600"
                           value="black-and-white"
                           name="printColor"
-                          onChange={(e) => setPrintColor(false)}
+                          onChange={(e) => setPrintColor("false")}
                         />
                         <span className="ml-2">Black & White</span>
                       </label>
@@ -388,7 +384,9 @@ export default function Create() {
                     </label>
                     <select
                       onChange={(e) =>
-                        setPagesPerSheet(parseInt(e.target.value, 10))
+                        // setPagesPerSheet(parseInt(e.target.value, 10))
+                        setPagesPerSheet(e.target.value)
+
                       }
                       className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2"
                     >
