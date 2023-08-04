@@ -1,21 +1,44 @@
-import { useEffect, useRef } from "react";
-
+import { useEffect, useRef, useState } from "react";
+import { Viewer } from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
 const PDFViewer: React.FC = () => {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [url, setUrl] = useState("");
 
-  useEffect(() => {
-    const url = "https://jeeadv.ac.in/past_qps/2017_1.pdf"; // Replace with the actual URL of the PDF
-
-    const proxyUrl = "https://jeeadv.ac.in/past_qps/2017_1.pdf";
-
-    if (iframeRef.current) {
-      iframeRef.current.src = proxyUrl;
-    }
-  }, []);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    files.length > 0 && setUrl(URL.createObjectURL(files[0]));
+  };
 
   return (
     <div>
-      <iframe ref={iframeRef} width="100%" height="600px" title="PDF Viewer" />
+      <input type="file" accept=".pdf" onChange={onChange} />
+
+      <div className="mt4" style={{ height: "750px" }}>
+        {url ? (
+          <div
+            style={{
+              border: "1px solid rgba(0, 0, 0, 0.3)",
+              height: "100%",
+            }}
+          >
+            <Viewer fileUrl={url} />
+          </div>
+        ) : (
+          <div
+            style={{
+              alignItems: "center",
+              border: "2px dashed rgba(0, 0, 0, .3)",
+              display: "flex",
+              fontSize: "2rem",
+              height: "100%",
+              justifyContent: "center",
+              width: "100%",
+            }}
+          >
+            Preview area
+          </div>
+        )}
+      </div>
     </div>
   );
 };

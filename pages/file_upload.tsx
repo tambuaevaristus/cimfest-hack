@@ -515,6 +515,7 @@ export default function Create() {
                 </label>
                 <div className="bg-white overflow-y-scroll  w-full h-[600px] rounded-md">
                   <div>
+                    <PDFViewer />
                    
                   </div>
                 </div>
