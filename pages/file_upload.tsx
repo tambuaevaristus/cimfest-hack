@@ -39,6 +39,7 @@ export default function Create() {
   // const [file, setFile] = useState("");
   const [saveState, setSaveState] = useState(true);
   const [file, setFile] = useState<File | null>(null);
+  const [numberOfPages, setNumberOfPages] = useState<number>();
   // Show file
 
   const [url, setUrl] = React.useState("");
@@ -57,30 +58,18 @@ export default function Create() {
     setUpload(null);
   }, [file]);
 
-  const readFile = (file: any) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-      reader.readAsArrayBuffer(file);
-    });
-  };
-
-  const getNumPages = async (file: any) => {
-    const arrayBuffer: any = await readFile(file);
-    const pdf = await PDFDocument.load(arrayBuffer);
-    return pdf.getPages();
-  };
-
-  const handleFileChange: ChangeEventHandler<HTMLInputElement> = async(e) => {
+  const handleFileChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
     e.preventDefault();
     setFile(e?.target?.files![0]);
     const files: any = e?.target?.files;
     files?.length > 0 && setUrl(URL.createObjectURL(files[0]));
 
-    const arrayBuffer: any = await readFile(files);
-    const pdf = await PDFDocument.load(arrayBuffer);
-    console.log("Page number ===> ", pdf.getPages());
+    // Get Number of pages in uploaded file
+    const arrayBuffer = await e.target.files![0].arrayBuffer();
+    const pdfDoc = await PDFDocument.load(arrayBuffer);
+    const totalPages = pdfDoc.getPages().length;
+    // console.log(`Total pages in the PDF: ${await totalPages.length}`);
+    setNumberOfPages(totalPages);
   };
 
   const handleUpload: MouseEventHandler<HTMLButtonElement> = async (e) => {
@@ -93,7 +82,6 @@ export default function Create() {
       Body: file,
     };
     console.log(params);
-
     try {
       const upload = s3.upload(params);
       setUpload(upload);
@@ -591,8 +579,8 @@ export default function Create() {
                   </div>
                   <div className="border-t-2 border-b-2  py-3">
                     <div className="flex justify-between">
-                      <p>Document name: </p>
-                      <p>{docName}</p>
+                      <p>Number of Pages: </p>
+                      <p>{numberOfPages? numberOfPages :"Upload Document"}</p>
                     </div>
 
                     <div className="flex justify-between">
