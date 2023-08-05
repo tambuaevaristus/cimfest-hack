@@ -27,7 +27,6 @@ export default function Create() {
   const [paperColor, setPaperColor] = useState("");
   const [pagesToPrint, setPagesToPrint] = useState("");
   const commandList = useSelector((state: RootState) => state.file).commands;
-
   // Layout properties
   const [pagesPerSheet, setPagesPerSheet] = useState("");
   const [layoutDirection, setLayoutDirection] = useState("");
@@ -58,11 +57,30 @@ export default function Create() {
     setUpload(null);
   }, [file]);
 
-  const handleFileChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const readFile = (file: any) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsArrayBuffer(file);
+    });
+  };
+
+  const getNumPages = async (file: any) => {
+    const arrayBuffer: any = await readFile(file);
+    const pdf = await PDFDocument.load(arrayBuffer);
+    return pdf.getPages();
+  };
+
+  const handleFileChange: ChangeEventHandler<HTMLInputElement> = async(e) => {
     e.preventDefault();
     setFile(e?.target?.files![0]);
     const files: any = e?.target?.files;
     files?.length > 0 && setUrl(URL.createObjectURL(files[0]));
+
+    const arrayBuffer: any = await readFile(files);
+    const pdf = await PDFDocument.load(arrayBuffer);
+    console.log("Page number ===> ", pdf.getPages());
   };
 
   const handleUpload: MouseEventHandler<HTMLButtonElement> = async (e) => {
@@ -167,21 +185,6 @@ export default function Create() {
       file: filePath,
       createdBy: session?.data?.user?.name,
     });
-  };
-
-  const readFile = (file: any) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-      reader.readAsArrayBuffer(file);
-    });
-  };
-
-  const getNumPages = async (file: any) => {
-    const arrayBuffer: any = await readFile(file);
-    const pdf = await PDFDocument.load(arrayBuffer);
-    return pdf.getPages();
   };
 
   return (
