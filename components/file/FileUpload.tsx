@@ -18,17 +18,8 @@ export default function FileUpload({url}: any) {
           </div>
         ) : (
           <div
-            style={{
-              alignItems: "center",
-              border: "2px dashed rgba(0, 0, 0, .3)",
-              display: "flex",
-              fontSize: "2rem",
-              height: "100%",
-              justifyContent: "center",
-              width: "100%",
-            }}
           >
-            Preview area
+            Preview Area
           </div>
         )}
       </div>
