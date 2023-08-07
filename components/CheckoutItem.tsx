@@ -9,6 +9,7 @@ export default function CheckoutItem({ name, amount, pages }: Props) {
   return (
     <div className="flex justify-between py-3 border-t">
       <div className="">
+        {/* Checkout Item */}
         <p>{name}</p>
 
         <p className="font-bold">{amount} Fcfa</p>

@@ -595,7 +595,7 @@ export default function Create() {
 
                     <div className="flex  justify-between">
                       <p className="font-bold">Total Cost</p>
-                      <p className="font-bold">5000 frs</p>
+                      <p className="font-bold">7000 frs</p>
                     </div>
                   </div>
                   <div>
