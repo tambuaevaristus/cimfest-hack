@@ -15,6 +15,13 @@ const roleSchema = new Schema({
         type: Schema.ObjectId,
         ref: "User",
     },
+    active: {
+        type: Boolean,
+        default: true,
+        select: false
+    },
+}, {
+    timestamps: true
 });
 
 roleSchema.plugin(uniqueValidator, {

@@ -44,12 +44,18 @@ const userSchema = new Schema(
             type: Date,
             default: Date.now(),
         },
+        active: {
+            type: Boolean,
+            default: true,
+            select: false
+        },
         resetToken: String,
         resetTokenExpiration: Date,
     },
     {
         toJSON: { virtuals: true },
         toObject: { virtuals: true },
+        timestamps: true
     }
 );
 
