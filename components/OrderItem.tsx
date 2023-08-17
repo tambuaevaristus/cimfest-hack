@@ -22,7 +22,7 @@ export default function OrderItem() {
               ></div>
             </div>
             <div>
-              <p className="font-semibold">Physics Handout 101</p>
+              <p className="font-semibold">Physics Handout 101n</p>
              
             </div>
           </div>
