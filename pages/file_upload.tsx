@@ -202,14 +202,14 @@ export default function Create() {
         )}
 
         <div className="container w-full mt-5 flex justify-end">
-        <button
-                        onClick={addFile}
-                        className="px-[17px] py-[9px] bg-violet-700 rounded-md shadow justify-center items-center flex"
-                      >
-                        <div className="text-white text-lg font-medium leading-tight">
-                         + Add Document
-                        </div>
-                      </button>
+          <button
+            onClick={addFile}
+            className="px-[17px] py-[9px] bg-violet-700 rounded-md shadow justify-center items-center flex"
+          >
+            <div className="text-white text-lg font-medium leading-tight">
+              + Add Document
+            </div>
+          </button>
         </div>
 
         <div className="flex">
@@ -598,7 +598,9 @@ export default function Create() {
                         <div className="text-gray-700 text-base font-medium leading-normal">
                           Document name
                         </div>
-                        <div className="text-gray-700 text-base font-normal leading-normal">Bio Paper2 </div>
+                        <div className="text-gray-700 text-base font-normal leading-normal">
+                          Bio Paper2{" "}
+                        </div>
                       </div>
                       <div className="self-stretch justify-between items-center  inline-flex md:block lg:inline-flex">
                         <div className="text-gray-700 text-base font-medium leading-normal">
