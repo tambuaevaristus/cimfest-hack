@@ -193,13 +193,24 @@ export default function Create() {
               Successfully, You can Add to add another file or{" "}
               <button
                 onClick={handlePrint}
-                className="p-2 border rounded-md bg-blue-500 text-white my-auto "
+                className="p-2 border rounded-md bg-violet-600 text-white my-auto "
               >
                 Proceed to Payment
               </button>
             </p>
           </nav>
         )}
+
+        <div className="container w-full mt-5 flex justify-end">
+        <button
+                        onClick={addFile}
+                        className="px-[17px] py-[9px] bg-violet-700 rounded-md shadow justify-center items-center flex"
+                      >
+                        <div className="text-white text-lg font-medium leading-tight">
+                         + Add Document
+                        </div>
+                      </button>
+        </div>
 
         <div className="flex">
           <div className="w-full">
