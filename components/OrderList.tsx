@@ -6,8 +6,47 @@ export default function OrderList() {
   return (
     <div>
       <div className="w-full overflow-hidden rounded-lg shadow-xs">
-      <Link href="/file_upload" className="bg-blue-500 float-right p-3 text-white rounded-lg mb-4">Place Command</Link>
+      
+        <div className="my-3">
+          <div className="w-[1200px] h-28 flex-col justify-center items-start gap-4 inline-flex">
+            <div className="self-stretch h-12 flex-col justify-start items-start gap-1 flex">
+              <div className="text-gray-700 text-xl font-bold leading-7">
+                Print Summary
+              </div>
+              <div className="text-gray-700 text-sm font-normal">
+                An overview of all print order and their details.
+              </div>
+            </div>
+            <div className="self-stretch justify-between items-center gap-4 inline-flex">
+              <div className=" self-stretch justify-start items-center gap-2 flex">
+                <div className=" self-stretch pl-[17px] pr-[13px] py-[9px] bg-white rounded-md shadow border border-zinc-100 justify-center items-center gap-2 flex">
+                  <div className="text-gray-700 text-sm font-normal leading-tight">
+                    Bulk actions
+                  </div>
+                  <div className="w-5 h-5 relative" />
+                </div>
+                <div className="px-4 py-1.5 bg-white rounded-md shadow border border-neutral-50 justify-center items-center gap-2 flex">
+                  <div className="text-gray-700 text-sm font-medium leading-tight">
+                    Apply
+                  </div>
+                </div>
+              </div>
+              <div className="justify-start items-start gap-4 flex">
+                <div className="justify-start items-start gap-2 flex">
+                  <div className="w-5 h-5 relative" />
+                  <input
+                    className="w-[389px] h-12 px-4 py-2 bg-white rounded-lg border justify-start items-center gap-4 flex"
+                    placeholder="Search"
+                  />
+                </div>
 
+                <button className="px-4 py-3 bg-white rounded-lg justify-center items-center gap-2 flex">
+                  Export to CSV
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="w-full overflow-x-auto">
           <table className="w-full whitespace-no-wrap">
             <thead>
@@ -21,16 +60,13 @@ export default function OrderList() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y">
-             
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
-
-           
+              <OrderItem />
+              <OrderItem />
+              <OrderItem />
+              <OrderItem />
+              <OrderItem />
+              <OrderItem />
+              <OrderItem />
             </tbody>
           </table>
         </div>
@@ -46,9 +82,7 @@ export default function OrderList() {
                   <button
                     className="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
                     aria-label="Previous"
-                  >
-                  
-                  </button>
+                  ></button>
                 </li>
                 <li>
                   <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
@@ -87,9 +121,7 @@ export default function OrderList() {
                   <button
                     className="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
                     aria-label="Next"
-                  >
-                  
-                  </button>
+                  ></button>
                 </li>
               </ul>
             </nav>

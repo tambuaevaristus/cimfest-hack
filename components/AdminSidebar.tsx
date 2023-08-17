@@ -105,9 +105,11 @@ export default function AdminSidebar({ isNavOpen }: any) {
               <div className="self-stretch p-4 rounded-md justify-between items-center gap-[105px] flex">
                 <div className="grow shrink basis-0 h-6 justify-start items-center gap-3 flex">
                   <div className="w-6 h-6 relative" />
-                  <div className="grow shrink basis-0 text-zinc-500 text-base font-normal leading-tight">
-                    Logout
-                  </div>
+                  <button onClick={() => signOut()}>
+                      <div className="grow shrink basis-0 text-zinc-500 text-base font-normal leading-tight">
+                        Logout
+                      </div>
+                    </button>
                 </div>
               </div>
             </div>
