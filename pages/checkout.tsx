@@ -8,9 +8,9 @@ export default function Checkout() {
   console.log("the list ==>", commandList);
 
   return (
-    <div className="my-5 p-3">
+    <div className="my-5 lg:w-4/5 p-3">
       <h1 className="font-bold text-[30px]">Payment</h1>
-      <div className=" py-10 w-full">
+      <div className=" py-10 ">
         <div className="bg-white p-10  my-2 rounded-lg">
           <h1 className="font-bold text-[20px]">Select Document</h1>
           <div className="my-2">
@@ -60,7 +60,7 @@ export default function Checkout() {
           </div>
         </div>
         <div className=" py-10 w-full">
-          <div className="bg-white p-5 lg:w-4/5 my-2 rounded-lg flex justify-between ">
+          <div className="bg-white p-5 my-2 rounded-lg flex justify-between ">
             <div className=" self-stretch justify-start items-center gap-6 flex">
               <div className="justify-start items-start gap-8 flex">
                 <div className="flex-col justify-start items-start gap-2 inline-flex">
