@@ -8,7 +8,7 @@ export default function OrderList() {
       <div className="w-full overflow-hidden rounded-lg shadow-xs">
       
         <div className="my-3">
-          <div className="w-[1200px] h-28 flex-col justify-center items-start gap-4 inline-flex">
+          <div className=" h-28 flex-col justify-center items-start gap-4 inline-flex">
             <div className="self-stretch h-12 flex-col justify-start items-start gap-1 flex">
               <div className="text-gray-700 text-xl font-bold leading-7">
                 Print Summary

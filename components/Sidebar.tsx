@@ -8,28 +8,28 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { signOut, useSession } from "next-auth/react";
 import { RootState } from "@/store";
+import Image from "next/image";
 
 export default function Sidebar({ isNavOpen }: any) {
   const userInfo = useSelector((state: RootState) => state.user);
-  const role: string = "admin";
-
   const session = useSession();
   const user = session?.data?.user;
   return (
     <div>
-      <div>
+      <div className="">
         <div className={isNavOpen ? "block lg:block" : "lg:block hidden"}>
-          <div className="max-w-[264px] bg-white h-screen pt-5 pb-4 flex-col justify-start items-start gap-5 inline-flex">
+          <div className="max-w-[264px] bg-white h-screen fixed overflow-y-scroll scrollbar-none pt-5 pb-4 flex-col justify-start items-start gap-5 inline-flex">
             <div className="self-stretch h-8 px-4 flex-col justify-start items-start flex">
-              <div className="w-[143px] h-8 relative" />
+              <div className="w-[143px] relative" />
             </div>
-            <div className="h-[231px] flex-col justify-start items-center flex">
-              <div className="self-stretch h-px bg-gray-200" />
-              <div className="self-stretch px-4 pt-6 pb-2 justify-center items-center inline-flex">
-                <div className="flex-col justify-center items-center gap-3 inline-flex">
-                  <img
-                    className="w-[122px] h-[122px] rounded-[100px]"
+            <div className=" flex-col justify-start items-center flex">
+              <div className="self-stretch bg-gray-200" />
+              <div className="self-stretch px-4  pb-2 justify-center items-center inline-flex">
+                <div className="flex-col justify-center items-center gap-2 inline-flex">
+                  <Image
+                    className="w-[100px] h-[100px] rounded-[100px]"
                     src={user?.image}
+                    alt="Profile"
                   />
                   <div className="flex-col justify-center items-center flex">
                     <div className="text-gray-700 text-base font-medium leading-normal">
@@ -70,18 +70,33 @@ export default function Sidebar({ isNavOpen }: any) {
                   </div>
                 </div>
               </div>
-              <div className="w-full justify-start items-start inline-flex">
-                <div className="w-full self-stretch p-4 pr-8 hover:bg-violet-200 rounded-md justify-between items-center gap-[105px] flex">
-                  <div className="grow shrink basis-0 h-6 justify-start items-center gap-3 flex">
-                    <div className="w-6 h-6 relative" />
-                    <Link href="/customers">
-                      <div className="grow shrink basis-0 text-zinc-500 text-base font-normal leading-tight">
-                        Billing
-                      </div>
-                    </Link>
+              {user?.role?.code == "admin" ? (
+                <div className="w-full justify-start items-start inline-flex">
+                  <div className="w-full self-stretch p-4 pr-8 hover:bg-violet-200 rounded-md justify-between items-center gap-[105px] flex">
+                    <div className="grow shrink basis-0 h-6 justify-start items-center gap-3 flex">
+                      <div className="w-6 h-6 relative" />
+                      <Link href="/customers">
+                        <div className="grow shrink basis-0 text-zinc-500 text-base font-normal leading-tight">
+                          Customers
+                        </div>
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="w-full justify-start items-start inline-flex">
+                  <div className="w-full self-stretch p-4 pr-8 hover:bg-violet-200 rounded-md justify-between items-center gap-[105px] flex">
+                    <div className="grow shrink basis-0 h-6 justify-start items-center gap-3 flex">
+                      <div className="w-6 h-6 relative" />
+                      <Link href="/customers">
+                        <div className="grow shrink basis-0 text-zinc-500 text-base font-normal leading-tight">
+                          Billing
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="w-full justify-start items-start inline-flex">
                 <div className="w-full self-stretch p-4 pr-8 hover:bg-violet-200 rounded-md justify-between items-center gap-[105px] flex">
                   <div className="grow shrink basis-0 h-6 justify-start items-center gap-3 flex">

@@ -23,11 +23,7 @@ export default function Layout({ children }: any) {
           <></>
         ) : (
           <div className="lg:w-1/4">
-            {user?.role?.code == "user" ? (
-              <AdminSidebar isNavOpen={isNavOpen} />
-            ) : (
-              <Sidebar isNavOpen={isNavOpen} />
-            )}{" "}
+            <Sidebar isNavOpen={isNavOpen} />
           </div>
         )}
         <div className=" container mx-auto mt-[50px]">{children}</div>
