@@ -19,19 +19,7 @@ export default function Sidebar({ isNavOpen }: any) {
           <div className="py-2 text-gray-500 dark:text-gray-400">
             {/* <div className="flex justify-center items-center flex-col">
               <div className="bg-gray-300 w-32 h-32 rounded-full overflow-hidden">
-                <img
-                  src={
-                    userInfo?.userData?.image
-                      ? userInfo?.userData?.image
-                      : "profileImage"
-                  }
-                  alt="Profile Image"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h2 className="text-xl font-bold mt-4">
-                {userInfo.userData?.name}
-              </h2>
+            
               <p className="text-gray-600 mt-2">{userInfo.userData?.email}</p>
               <p className="text-gray-600">+237676814364</p>
             </div> */}
