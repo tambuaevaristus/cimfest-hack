@@ -86,7 +86,7 @@ export default function Sidebar({ isNavOpen }: any) {
                   <span className="ml-4">Setting</span>
                 </a>
               </li>{" "}
-
+{/* yeay */}
               <li className="relative px-6 py-3">
                 <Link
                   className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
