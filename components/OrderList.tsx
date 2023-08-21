@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import OrderItem from "./OrderItem";
 import Link from "next/link";
+import { Command } from "@/types";
 
 export default function OrderList() {
+  const [orders, setOrders] = useState<[Command]>();
+  const getAllOrder = async () => {
+    await fetch("/api/order/get")
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setOrders(data.data);
+      });
+  };
+
+  useEffect(() => {
+    getAllOrder();
+  }, []);
   return (
     <div>
       <div className="w-full overflow-hidden rounded-lg shadow-xs">
@@ -60,13 +75,9 @@ export default function OrderList() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y">
-              <OrderItem />
-              <OrderItem />
-              <OrderItem />
-              <OrderItem />
-              <OrderItem />
-              <OrderItem />
-              <OrderItem />
+              {orders?.map((order:any) => (
+                <OrderItem key={order._id} />
+              ))}
             </tbody>
           </table>
         </div>

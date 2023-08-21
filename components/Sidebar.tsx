@@ -11,7 +11,6 @@ import { RootState } from "@/store";
 import Image from "next/image";
 
 export default function Sidebar({ isNavOpen }: any) {
-  const userInfo = useSelector((state: RootState) => state.user);
   const session = useSession();
   const user = session?.data?.user;
   return (
@@ -28,7 +27,7 @@ export default function Sidebar({ isNavOpen }: any) {
                 <div className="flex-col justify-center items-center gap-2 inline-flex">
                   <Image
                     className="w-[100px] h-[100px] rounded-[100px]"
-                    src={user?.image}
+                    src={user?.image }
                     alt="Profile"
                   />
                   <div className="flex-col justify-center items-center flex">
