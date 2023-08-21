@@ -1,12 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import OrderItem from "./OrderItem";
 import Link from "next/link";
+import { Command } from "@/types";
 
 export default function OrderList() {
+  const [orders, setOrders] = useState<[Command]>();
+  const getAllOrder = async () => {
+    await fetch("/api/order/get")
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setOrders(data.data);
+      });
+  };
+
+  useEffect(() => {
+    getAllOrder();
+  }, []);
   return (
     <div>
       <div className="w-full overflow-hidden rounded-lg shadow-xs">
-      <Link href="/file_upload" className="bg-blue-500 float-right p-3 text-white rounded-lg mb-4">Place Command</Link>
+        <Link
+          href="/file_upload"
+          className="bg-blue-500 float-right p-3 text-white rounded-lg mb-4"
+        >
+          Place Command
+        </Link>
 
         <div className="w-full overflow-x-auto">
           <table className="w-full whitespace-no-wrap">
@@ -21,16 +41,9 @@ export default function OrderList() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y">
-             
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
-             <OrderItem />
-
-           
+              {orders?.map((order:any) => (
+                <OrderItem key={order._id} />
+              ))}
             </tbody>
           </table>
         </div>
@@ -46,9 +59,7 @@ export default function OrderList() {
                   <button
                     className="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
                     aria-label="Previous"
-                  >
-                  
-                  </button>
+                  ></button>
                 </li>
                 <li>
                   <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
@@ -87,9 +98,7 @@ export default function OrderList() {
                   <button
                     className="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
                     aria-label="Next"
-                  >
-                  
-                  </button>
+                  ></button>
                 </li>
               </ul>
             </nav>
