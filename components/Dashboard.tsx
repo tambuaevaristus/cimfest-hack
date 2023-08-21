@@ -4,18 +4,17 @@ import React from "react";
 export default function Dashboard() {
   return (
     <div>
-      <div >
+      <div>
         <div className="w-5 h-5 relative" />
-        <div>
-        </div>
+        <div></div>
       </div>
 
       <Link
-          href="/file_upload"
-          className=" h-11 px-4 py-1 opacity-80 text-white float-right bg-violet-700 rounded-lg justify-start items-center gap-2 inline-flex"
-        >
-          + Order Print
-        </Link>
+        href="/file_upload"
+        className=" h-11 px-4 py-1 opacity-80 text-white float-right bg-violet-700 rounded-lg justify-start items-center gap-2 inline-flex"
+      >
+        + Order Print
+      </Link>
       <div className="grid gap-6 mb-8 mt-20 containter  md:grid-cols-2 xl:grid-cols-4">
         <div className="flex items-center p-4 bg-white rounded-lg shadow-xs ">
           <div className="p-3 mr-4 text-orange-500 bg-orange-100 rounded-full">
