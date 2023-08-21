@@ -1,7 +1,6 @@
-import Link from "next/link";
 import React from "react";
 
-export default function OrderItem() {
+export default function CommandItem() {
   return (
     
       <tr className="text-gray-700 dark:text-gray-400">
@@ -37,12 +36,12 @@ export default function OrderItem() {
         </td>
         <td>
             <div className="flex justify-around">
-                <Link  href={"/orders/xx"} className="text-blue-500">
-                    View
-                </Link>
-                {/* <button className="text-red-500">
+                <button className="text-blue-500">
+                    Edit
+                </button>
+                <button className="text-red-500">
                     Delete
-                </button> */}
+                </button>
 
             </div>
         </td>
