@@ -27,7 +27,7 @@ export default function OrderList() {
         >
           Place Command
         </Link>
-
+{/* body */}
         <div className="w-full overflow-x-auto">
           <table className="w-full whitespace-no-wrap">
             <thead>
