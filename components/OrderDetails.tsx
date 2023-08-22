@@ -3,7 +3,7 @@ import React from "react";
 export default function OrderDetails() {
   return (
     <div>
-      <div className="px-4 pt-2 pb-4 bg-violet-100 rounded-tl-md rounded-tr-md border-b border-gray-700 justify-start items-center w-full inline-flex">
+      <div className="px-4 pt-2 pb-4 bg-violet-100 rounded-tl-md rounded-tr-md border-b border-gray-700 justify-start items-center  inline-flex">
         <div className="justify-start items-center gap-4 flex">
           <div className="w-6 px-0.5 rounded-[100px] border border-black justify-center items-center gap-2 flex">
             <div className="w-5 h-5 relative rounded-[100px]" />

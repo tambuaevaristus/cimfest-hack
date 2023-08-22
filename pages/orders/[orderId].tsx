@@ -18,163 +18,7 @@ import FileUpload from "@/components/file/FileUpload";
 import OrderDetails from "@/components/OrderDetails";
 
 export default function Create() {
-  const [docName, setDocName] = useState("");
-  const [numberOfCopies, setNumberOfCopies] = useState("");
-  const [paperType, setPaperType] = useState("Normal");
-  const [paperSize, setPaperSize] = useState("A4");
-  const [orientation, setOrientation] = useState("Potrait");
-  const [printSides, setprintSides] = useState("Recto");
-  const [printColor, setPrintColor] = useState("");
-  const [paperColor, setPaperColor] = useState("");
-  const [pagesToPrint, setPagesToPrint] = useState("");
-  const commandList = useSelector((state: RootState) => state.file).commands;
-  // Layout properties
-  const [pagesPerSheet, setPagesPerSheet] = useState("");
-  const [layoutDirection, setLayoutDirection] = useState("");
-  const [printType, setPrintType] = useState("Plain");
-  const [biding, setBiding] = useState("No binding");
-  const [bidingType, setBidingType] = useState("No binding");
-  const [extraDetails, setExtraDetails] = useState("");
-  const [filePath, setFilePath] = useState("");
-  const [cost, setCost] = useState();
-  // const [file, setFile] = useState("");
-  const [saveState, setSaveState] = useState(true);
-  const [file, setFile] = useState<File | null>(null);
-  const [numberOfPages, setNumberOfPages] = useState<number>();
-  // Show file
 
-  const [url, setUrl] = React.useState("");
-
-  const session = useSession();
-
-  const [upload, setUpload] = useState<S3.ManagedUpload | null>(null);
-  const [progress, setProgress] = useState(0);
-  const s3 = new S3({
-    accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY,
-    secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
-  });
-
-  useEffect(() => {
-    setProgress(0);
-    setUpload(null);
-  }, [file]);
-
-  const handleFileChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
-    e.preventDefault();
-    setFile(e?.target?.files![0]);
-    const files: any = e?.target?.files;
-    files?.length > 0 && setUrl(URL.createObjectURL(files[0]));
-
-    // Get Number of pages in uploaded file
-    const arrayBuffer = await e.target.files![0].arrayBuffer();
-    const pdfDoc = await PDFDocument.load(arrayBuffer);
-    const totalPages = pdfDoc.getPages().length;
-    // console.log(`Total pages in the PDF: ${await totalPages.length}`);
-    setNumberOfPages(totalPages);
-  };
-
-  const handleUpload: MouseEventHandler<HTMLButtonElement> = async (e) => {
-    e.preventDefault();
-    if (!file) return;
-    const BUCKET = process.env.NEXT_PUBLIC_AWS_BUCKET as string;
-    const params = {
-      Bucket: BUCKET,
-      Key: file?.name,
-      Body: file,
-    };
-    console.log(params);
-    try {
-      const upload = s3.upload(params);
-      setUpload(upload);
-      upload.on("httpUploadProgress", (p) => {
-        console.log(p.loaded / p.total);
-        setProgress(p.loaded / p.total);
-      });
-      const result = await upload.promise();
-      setFilePath(result?.Location);
-      const doc = {
-        name: docName,
-        paperType,
-        paperSize,
-        orientation,
-        printSides,
-        color: printColor,
-        pagesPerSheet,
-        printingType: printType,
-        bindingType: bidingType,
-        description: extraDetails,
-        file: filePath,
-        createdBy: session?.data?.user?.name,
-      };
-
-      const res = await fetch("/api/document/upload", {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-type": "application/json;charset=UTF-8",
-        },
-        body: JSON.stringify(doc),
-      });
-
-      if (!res.ok) {
-        throw new Error("Error placing command, try again");
-      }
-      const docResult = await res.json();
-
-      console.log("doc result: ", docResult);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleCancel: MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
-    if (!upload) return;
-    upload.abort();
-    // progress.set(0);
-    setProgress(0);
-    setUpload(null);
-  };
-
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const fileObj: Command = {
-    docName,
-    numberOfCopies,
-    paperType,
-    paperSize,
-    orientation,
-    printSides,
-    printColor,
-    paperColor,
-    pagesPerSheet,
-    printType,
-    biding,
-    bidingType,
-    extraDetails,
-    cost,
-  };
-  const addFile = () => {
-    dispatch(addfile(fileObj));
-    setSaveState(true);
-  };
-  const handlePrint = () => {
-    router.push("/checkout");
-    console.log("print commant: ", {
-      name: docName,
-      paperType,
-      paperSize,
-      orientation,
-      printSides,
-      paperColor,
-      pagesPerSheet,
-      printingType: printType,
-      bindingType: bidingType,
-      description: extraDetails,
-      file: filePath,
-      createdBy: session?.data?.user?.name,
-    });
-  };
 
   return (
     <div>
@@ -185,8 +29,8 @@ export default function Create() {
         <div className="flex">
           <div className="w-full">
             {/* order button  has to be a drop down */}
-            <div className=" py-5 lg:rounded md:flex gap-4 ">
-              <div className="mb-4 md:w-2/3 rounded-lg border  rounded pt-6 pb-8">
+            <div className=" py-5 lg:rounded md:flex gap-2 ">
+              <div className="mb-4 md:w-2/3 rounded-lg  rounded pt-6 pb-8">
                 <div className="bg-white p-4 rounded-md">
                   <div className="w-[700px] h-[53px] pb-2 border-b border-neutral-200 justify-start items-center gap-2 inline-flex">
                     <div className="grow shrink basis-0 h-[45px] justify-end items-start gap-2 flex">
@@ -335,22 +179,20 @@ export default function Create() {
                           Order Actions
                         </div>
                       </div>
-                      {/* <div className="w-5 h-5 relative" /> */}
                     </div>
                     <div className="self-stretch flex-col justify-start items-start gap-6 flex">
                       <div className="self-stretch px-4 py-3 bg-violet-100 rounded-xl justify-between items-center inline-flex">
                         <div className="text-gray-700 text-lg font-medium leading-loose">
                           Change Status
                         </div>
-                        <div className="w-6 h-6 relative" />
                       </div>
-                      <div className="self-stretch justify-between items-start gap-6 inline-flex">
+                      <div className="self-stretch justify-between items-start inline-flex">
                         <div className="h-10 py-2 opacity-80 rounded-lg justify-start items-center gap-2 flex">
                           <div className="grow shrink basis-0 text-gray-700 text-base font-medium underline leading-normal">
                             Move to Trash
                           </div>
                         </div>
-                        <div className="px-[17px] py-[9px] bg-violet-700 rounded-md shadow justify-center items-center flex">
+                        <div className="py-[9px] bg-violet-700 rounded-md shadow justify-center items-center flex">
                           <div className="text-white text-base font-medium leading-tight">
                             Update
                           </div>
