@@ -16,10 +16,21 @@ import { useSession } from "next-auth/react";
 import { S3 } from "aws-sdk";
 import FileUpload from "@/components/file/FileUpload";
 import OrderDetails from "@/components/OrderDetails";
+import useGetOrderById from "@/hooks/useGetOrderById";
 
-export default function Create() {
+export default function OrderId() {
+  const router = useRouter();
+  const orderId: any = router.query?.orderId;
+  const { isLoading, data, isError, error: any } = useGetOrderById(orderId);
 
+  if (isLoading) {
+    return <h2>Loading...</h2>;
+  }
+  // if (isError) {
+  //   return <h2>An Error occured please try again</h2>;
+  // }
 
+  console.log("order again==> " + data)
   return (
     <div>
       <div className="container mx-auto mt-[65px] gap-1  md:p-2">
@@ -141,7 +152,7 @@ export default function Create() {
                   {/* End of drop down  content */}
 
                   {/* Order detials */}
-                  <OrderDetails />
+                  <OrderDetails order={data?.data} />
 
                   <div className="px-4 py-2 bg-violet-100 rounded-bl-md rounded-br-md border-t border-gray-700 justify-between w-full items-center inline-flex">
                     <div className="px-4 py-2 bg-violet-100 rounded-md justify-start items-center gap-[296px] flex">

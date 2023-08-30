@@ -2,22 +2,21 @@ import React, { useEffect, useState } from "react";
 import OrderItem from "./OrderItem";
 import Link from "next/link";
 import { Command } from "@/types";
+import { isError, useQuery } from "@tanstack/react-query";
+import { useOrderData } from "@/hooks/useOrderData";
 
 export default function OrderList() {
-  const [orders, setOrders] = useState<[Command]>();
-  const getAllOrder = async () => {
-    await fetch("/api/order/get")
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setOrders(data.data);
-      });
-  };
+  // const [orders, setOrders] = useState<[Command]>();
+  const { isLoading, data, error, isError } = useOrderData();
 
-  useEffect(() => {
-    getAllOrder();
-  }, []);
+  if (isLoading) {
+    return <h2>Loading...</h2>;
+  }
+
+  if (isError) {
+    return <h2>Server Error try refreshing</h2>;
+  }
+
   return (
     <div>
       <div className="w-full overflow-hidden rounded-lg shadow-xs">
@@ -75,8 +74,8 @@ export default function OrderList() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y">
-              {orders?.map((order: any) => (
-                <OrderItem key={order._id} />
+              {data?.data?.data?.map((order: any) => (
+                <OrderItem key={order._id} data={data?.data?.data} />
               ))}
             </tbody>
           </table>

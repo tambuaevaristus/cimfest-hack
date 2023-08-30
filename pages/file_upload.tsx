@@ -43,9 +43,7 @@ export default function Create() {
   // Show file
 
   const [url, setUrl] = React.useState("");
-
   const session = useSession();
-
   const [upload, setUpload] = useState<S3.ManagedUpload | null>(null);
   const [progress, setProgress] = useState(0);
   const s3 = new S3({
@@ -130,7 +128,6 @@ export default function Create() {
     e.preventDefault();
     if (!upload) return;
     upload.abort();
-    // progress.set(0);
     setProgress(0);
     setUpload(null);
   };
@@ -157,22 +154,8 @@ export default function Create() {
     dispatch(addfile(fileObj));
     setSaveState(true);
   };
-  const handlePrint = () => {
+  const handlePlaceCommand = () => {
     router.push("/checkout");
-    console.log("print commant: ", {
-      name: docName,
-      paperType,
-      paperSize,
-      orientation,
-      printSides,
-      paperColor,
-      pagesPerSheet,
-      printingType: printType,
-      bindingType: bidingType,
-      description: extraDetails,
-      file: filePath,
-      createdBy: session?.data?.user?.name,
-    });
   };
 
   return (
@@ -186,21 +169,20 @@ export default function Create() {
             </p>
           </nav>
         ) : (
-          <nav className="flex px-5 py-3 text-gray-700 border border-gray-200  rounded-lg bg-green-100">
+          <nav className="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-green-100">
             <p className="mx-auto">
-              {commandList?.length}{" "}
+              {commandList?.length}
               {commandList?.length == 1 ? "file" : "files"} uploaded
-              Successfully, You can Add to add another file or{" "}
+              Successfully, You can Add to add another file or
               <button
-                onClick={handlePrint}
-                className="p-2 border rounded-md bg-violet-600 text-white my-auto "
+                onClick={handlePlaceCommand}
+                className="p-2 border rounded-md bg-violet-600 text-white my-auto"
               >
                 Proceed to Payment
               </button>
             </p>
           </nav>
         )}
-
         <div className="container w-full mt-5 flex justify-end">
           <button
             onClick={addFile}
@@ -211,7 +193,6 @@ export default function Create() {
             </div>
           </button>
         </div>
-
         <div className="flex">
           <div className="w-full">
             <div className=" py-5 lg:rounded md:flex gap-4 ">
@@ -245,7 +226,7 @@ export default function Create() {
                   </div>
                   <div className="md:flex justify-between my-3 border-b-2 py-2 border-gray-300">
                     <label className="text-gray-700 text-lg font-medium leading-normal">
-                      Pages{" "}
+                      Pages
                     </label>
                     <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2">
                       <option value="All">All</option>
@@ -278,7 +259,6 @@ export default function Create() {
                       <option value="Pink">Pink</option>
                     </select>
                   </div>
-
                   <div className="md:flex justify-between my-3 border-b-2 py-2 border-gray-300">
                     <label className="text-gray-700 text-lg font-medium leading-normal">
                       Paper Size
@@ -292,7 +272,6 @@ export default function Create() {
                       <option value="A5">A5</option>
                     </select>
                   </div>
-
                   <div className="md:flex justify-between my-3 border-b-2 py-2 border-gray-300">
                     <label className="text-gray-700 text-lg font-medium leading-normal">
                       Orientation
@@ -419,7 +398,6 @@ export default function Create() {
                     </select>
                   </div>
                 </div>
-
                 <h3>Paper Handling</h3>
                 <div className="bg-white rounded-md p-4 my-2">
                   <div className="flex justify-between my-3 border-b-2 py-2 border-gray-300">
@@ -634,7 +612,7 @@ export default function Create() {
                         </div>
                       </div>
                       <button
-                        onClick={handlePrint}
+                        onClick={handlePlaceCommand}
                         className="px-[17px] py-[9px] bg-violet-700 rounded-md shadow justify-center items-center flex"
                       >
                         <div className="text-white text-sm font-medium leading-tight">
