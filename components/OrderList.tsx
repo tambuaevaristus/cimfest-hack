@@ -123,11 +123,7 @@ export default function OrderList() {
                     8
                   </button>
                 </li>
-                <li>
-                  <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
-                    9
-                  </button>
-                </li>
+            
                 <li>
                   <button
                     className="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
