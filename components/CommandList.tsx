@@ -2,29 +2,32 @@ import React, { useEffect, useState } from "react";
 import OrderItem from "./OrderItem";
 import Link from "next/link";
 import { Command } from "@/types";
-import { isError, useQuery } from "@tanstack/react-query";
-import { useOrderData } from "@/hooks/useOrderData";
+import CommandItem from "./CommandItem";
 
-export default function OrderList() {
-  // const [orders, setOrders] = useState<[Command]>();
-  const { isLoading, data, error, isError } = useOrderData();
+export default function CommandList() {
+  const [orders, setOrders] = useState<[Command]>();
+  const getAllOrder = async () => {
+    await fetch("/api/order/get")
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setOrders(data.data);
+      });
+  };
 
-  if (isLoading) {
-    return <h2>Loading...</h2>;
-  }
-
-  if (isError) {
-    return <h2>Server Error try refreshing</h2>;
-  }
-
+  useEffect(() => {
+    getAllOrder();
+  }, []);
   return (
     <div>
       <div className="w-full overflow-hidden rounded-lg shadow-xs">
+      
         <div className="my-3">
           <div className=" h-28 flex-col justify-center items-start gap-4 inline-flex">
             <div className="self-stretch h-12 flex-col justify-start items-start gap-1 flex">
               <div className="text-gray-700 text-xl font-bold leading-7">
-                Order Summary
+                Print Summary
               </div>
               <div className="text-gray-700 text-sm font-normal">
                 An overview of all print order and their details.
@@ -65,17 +68,16 @@ export default function OrderList() {
             <thead>
               <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                 <th className="px-4 py-3"></th>
-                <th className="px-4 py-3">Client Name</th>
-                {/* <th className="px-4 py-3">Description</th> */}
-                <th className="px-4 py-3">Order Date</th>
+                <th className="px-4 py-3">Document name</th>
+                <th className="px-4 py-3">Description</th>
+                <th className="px-4 py-3">Date printed</th>
                 <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">Type</th>
                 <th className="px-4 py-3">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y">
-              {data?.data?.data?.map((order: any) => (
-                <OrderItem key={order._id} data={data?.data?.data} />
+              {orders?.map((order:any) => (
+                <CommandItem key={order._id} />
               ))}
             </tbody>
           </table>
@@ -122,7 +124,11 @@ export default function OrderList() {
                     8
                   </button>
                 </li>
-            
+                <li>
+                  <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                    9
+                  </button>
+                </li>
                 <li>
                   <button
                     className="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"

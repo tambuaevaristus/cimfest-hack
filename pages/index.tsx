@@ -1,5 +1,6 @@
 import Dashboard from "@/components/Dashboard";
 import OrderList from "@/components/OrderList";
+import CommandList from "@/components/CommandList";
 
 import { getSession } from "next-auth/react";
 import Link from "next/link";
@@ -11,6 +12,8 @@ export default function Home() {
       <div className="  py-5 px-5 float-right container">
         <Dashboard />
         <OrderList />
+
+        <CommandList />
       </div>
     </div>
   );
