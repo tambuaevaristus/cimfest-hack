@@ -43,7 +43,9 @@ export default function Create() {
   // Show file
 
   const [url, setUrl] = React.useState("");
+
   const session = useSession();
+
   const [upload, setUpload] = useState<S3.ManagedUpload | null>(null);
   const [progress, setProgress] = useState(0);
   const s3 = new S3({
@@ -128,6 +130,7 @@ export default function Create() {
     e.preventDefault();
     if (!upload) return;
     upload.abort();
+    // progress.set(0);
     setProgress(0);
     setUpload(null);
   };
@@ -154,8 +157,22 @@ export default function Create() {
     dispatch(addfile(fileObj));
     setSaveState(true);
   };
-  const handlePlaceCommand = () => {
+  const handlePrint = () => {
     router.push("/checkout");
+    console.log("print commant: ", {
+      name: docName,
+      paperType,
+      paperSize,
+      orientation,
+      printSides,
+      paperColor,
+      pagesPerSheet,
+      printingType: printType,
+      bindingType: bidingType,
+      description: extraDetails,
+      file: filePath,
+      createdBy: session?.data?.user?.name,
+    });
   };
 
   return (
@@ -169,34 +186,24 @@ export default function Create() {
             </p>
           </nav>
         ) : (
-          <nav className="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-green-100">
+          <nav className="flex px-5 py-3 text-gray-700 border border-gray-200  rounded-lg bg-green-100">
             <p className="mx-auto">
-              {commandList?.length}
+              {commandList?.length}{" "}
               {commandList?.length == 1 ? "file" : "files"} uploaded
-              Successfully, You can Add to add another file or
+              Successfully, You can Add to add another file or{" "}
               <button
-                onClick={handlePlaceCommand}
-                className="p-2 border rounded-md bg-violet-600 text-white my-auto"
+                onClick={handlePrint}
+                className="p-2 border rounded-md bg-blue-500 text-white my-auto "
               >
                 Proceed to Payment
               </button>
             </p>
           </nav>
         )}
-        <div className="container w-full mt-5 flex justify-end">
-          <button
-            onClick={addFile}
-            className="px-[17px] py-[9px] bg-violet-700 rounded-md shadow justify-center items-center flex"
-          >
-            <div className="text-white text-lg font-medium leading-tight">
-              + Add Document
-            </div>
-          </button>
-        </div>
         <div className="flex">
           <div className="w-full">
-            <div className=" py-5 lg:rounded md:flex gap-4 ">
-              <div className="mb-4 md:w-2/3 rounded-lg border  rounded pt-6 pb-8">
+            <div className=" p-5 lg:rounded md:flex gap-2 ">
+              <div className="mb-4 md:w-3/5 rounded-lg border  rounded md:px-8 pt-6 pb-8">
                 <div className="mb-4 md:flex md:justify-between">
                   <div className="md:flex mb-4 md:mb-0 w-full gap-2">
                     <div className="w-full">
@@ -215,7 +222,7 @@ export default function Create() {
 
                 <div className="bg-white p-4 rounded-md">
                   <div className="md:flex justify-between my-3 border-b-2 py-2 border-gray-300">
-                    <label className="text-gray-700 text-lg font-medium leading-normal">
+                    <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Number of Copies
                     </label>
                     <input
@@ -225,8 +232,8 @@ export default function Create() {
                     />
                   </div>
                   <div className="md:flex justify-between my-3 border-b-2 py-2 border-gray-300">
-                    <label className="text-gray-700 text-lg font-medium leading-normal">
-                      Pages
+                    <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
+                      Pages{" "}
                     </label>
                     <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2">
                       <option value="All">All</option>
@@ -234,7 +241,7 @@ export default function Create() {
                     </select>
                   </div>
                   <div className="md:flex justify-between my-3 py-2">
-                    <label className="text-gray-700 text-lg font-medium leading-normal">
+                    <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Paper Type
                     </label>
                     <select
@@ -246,7 +253,7 @@ export default function Create() {
                     </select>
                   </div>
                   <div className="md:flex justify-between border-b-2 border-gray-300 my-3 py-2">
-                    <label className="text-gray-700 text-lg font-medium leading-normal">
+                    <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Paper color
                     </label>
                     <select
@@ -259,8 +266,9 @@ export default function Create() {
                       <option value="Pink">Pink</option>
                     </select>
                   </div>
+
                   <div className="md:flex justify-between my-3 border-b-2 py-2 border-gray-300">
-                    <label className="text-gray-700 text-lg font-medium leading-normal">
+                    <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Paper Size
                     </label>
                     <select
@@ -272,8 +280,9 @@ export default function Create() {
                       <option value="A5">A5</option>
                     </select>
                   </div>
+
                   <div className="md:flex justify-between my-3 border-b-2 py-2 border-gray-300">
-                    <label className="text-gray-700 text-lg font-medium leading-normal">
+                    <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Orientation
                     </label>
                     <div className="md:flex flex-row justify-between">
@@ -301,7 +310,7 @@ export default function Create() {
                   </div>
 
                   <div className="flex justify-between my-3 border-b-2 py-2 border-gray-300">
-                    <label className="text-gray-700 text-lg font-medium leading-normal">
+                    <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Print Sides
                     </label>
                     <div className="flex flex-row justify-between">
@@ -329,7 +338,7 @@ export default function Create() {
                   </div>
 
                   <div className="flex justify-between my-3 border-b-2 py-2 border-gray-300">
-                    <label className="text-gray-700 text-lg font-medium leading-normal">
+                    <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Print Color
                     </label>
                     <div className="flex flex-row justify-between">
@@ -360,7 +369,7 @@ export default function Create() {
                 <h3>Layout</h3>
                 <div className="bg-white rounded-md p-4 my-2">
                   <div className="flex justify-between my-3 border-b-2 py-2 border-gray-300">
-                    <label className="text-gray-700 text-lg font-medium leading-normal">
+                    <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Pages per sheet
                     </label>
                     <select
@@ -378,7 +387,7 @@ export default function Create() {
                   </div>
 
                   <div className="flex justify-between my-3 border-b-2 py-2 border-gray-300">
-                    <label className="text-gray-700 text-lg font-medium leading-normal">
+                    <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Layout Direction
                     </label>
                     <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2">
@@ -388,7 +397,7 @@ export default function Create() {
                     </select>
                   </div>
                   <div className="flex justify-between my-3 border-b-2 py-2 border-gray-300">
-                    <label className="text-gray-700 text-lg font-medium leading-normal">
+                    <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Margin
                     </label>
                     <select className="my-auto bg-gray-50 border border-gray-300 px-2 rounded-md py-2">
@@ -398,10 +407,11 @@ export default function Create() {
                     </select>
                   </div>
                 </div>
+
                 <h3>Paper Handling</h3>
                 <div className="bg-white rounded-md p-4 my-2">
                   <div className="flex justify-between my-3 border-b-2 py-2 border-gray-300">
-                    <label className="text-gray-700 text-lg font-medium leading-normal">
+                    <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Printing Type
                     </label>
                     <div className="flex flex-row justify-between">
@@ -431,7 +441,7 @@ export default function Create() {
                   </div>
 
                   <div className="flex justify-between my-3 border-b-2 py-2 border-gray-300">
-                    <label className="text-gray-700 text-lg font-medium leading-normal">
+                    <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Binding
                     </label>
                     <div className="flex flex-row justify-between">
@@ -459,7 +469,7 @@ export default function Create() {
                     </div>
                   </div>
                   <div className="flex justify-between my-3 border-b-2 py-2 border-gray-300">
-                    <label className="text-gray-700 text-lg font-medium leading-normal">
+                    <label className="block my-auto mb-2 text-sm font-medium text-gray-900">
                       Binding Type
                     </label>
                     <select
@@ -486,9 +496,11 @@ export default function Create() {
                   ></textarea>
                 </div>
               </div>
-              <div className="mb-4 md:w-1/3 rounded-lg pt-6 pb-8">
-                <br />
-                <div className="bg-white overflow-y-scroll  w-full h-[300px] rounded-md">
+              <div className="mb-4 md:w-2/5 rounded-lg border pt-6 pb-8">
+                <label className="block mb-2 text-sm  font-medium text-gray-900 dark:text-white">
+                  Upload file
+                </label>
+                <div className="bg-white overflow-y-scroll  w-full h-[400px] rounded-md">
                   <div>
                     {url ? (
                       <div>
@@ -560,64 +572,40 @@ export default function Create() {
                     <BiTrash color="red" />
                   </button>
                 </div>
-
-                <div className="w-full h-auto p-6 bg-white rounded-md flex-col justify-start items-start gap-4 inline-flex">
-                  <div className="self-stretch pb-2 border-b border-neutral-200 justify-start items-center gap-2 inline-flex">
-                    <div className="grow shrink basis-0 h-6 justify-end items-start gap-2 flex">
-                      <div className="grow shrink basis-0 text-gray-700 text-xl font-medium leading-normal">
-                        Summary
-                      </div>
-                    </div>
-                    <div className="w-5 h-5 relative" />
+                <div className="bg-white rounded-md p-4 my-2">
+                  <div className="flex justify-between">
+                    {" "}
+                    <h3 className="font-bold">Summary</h3>
                   </div>
-                  <div className="self-stretch flex-col justify-start items-start gap-6 flex">
-                    <div className="self-stretch flex-col justify-start items-start gap-[18px] flex">
-                      <div className="self-stretch justify-between items-center inline-flex md:block lg:inline-flex">
-                        <div className="text-gray-700 text-base font-medium leading-normal">
-                          Document name
-                        </div>
-                        <div className="text-gray-700 text-base font-normal leading-normal">
-                          Bio Paper2{" "}
-                        </div>
-                      </div>
-                      <div className="self-stretch justify-between items-center  inline-flex md:block lg:inline-flex">
-                        <div className="text-gray-700 text-base font-medium leading-normal">
-                          Uploaded date
-                        </div>
-                        <div className="text-gray-700 text-base font-normal leading-normal">
-                          13/06/2023
-                        </div>
-                      </div>
-                      <div className="self-stretch justify-between items-center  inline-flex md:block lg:inline-flex">
-                        <div className=" text-gray-700 text-base font-medium leading-normal">
-                          Total pages
-                        </div>
-                        <div className="text-gray-700 text-base font-normal leading-normal">
-                          {numberOfPages ? numberOfPages : "-"}
-                        </div>
-                      </div>
-                      <div className="self-stretch pb-2 border-b border-neutral-200 justify-between items-center  inline-flex">
-                        <div className="w-[84px] text-gray-700 text-base font-medium leading-normal">
-                          Total Cost
-                        </div>
-                        <div className="text-gray-700 text-base font-normal leading-normal">
-                          2500frs
-                        </div>
-                      </div>
+                  <div className="border-t-2 border-b-2  py-3">
+                    <div className="flex justify-between">
+                      <p>Number of Pages: </p>
+                      <p>{numberOfPages? numberOfPages :"Upload Document"}</p>
                     </div>
-                    <div className="self-stretch justify-between items-start gap-6 inline-flex">
-                      <div className="h-10 py-2 opacity-80 rounded-lg justify-start items-center gap-2 flex">
-                        <div className="grow shrink basis-0 text-gray-700 text-base font-medium underline leading-normal">
-                          Move to Trash
-                        </div>
-                      </div>
+
+                    <div className="flex justify-between">
+                      <p>Updated</p>
+                      <p>My CV</p>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <p>Total Pages</p>
+                      <p>My CV</p>
+                    </div>
+
+                    <div className="flex  justify-between">
+                      <p className="font-bold">Total Cost</p>
+                      <p className="font-bold">5000 frs</p>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between py-2">
+                      <p className="my-auto">Document name: {docName}</p>
                       <button
-                        onClick={handlePlaceCommand}
-                        className="px-[17px] py-[9px] bg-violet-700 rounded-md shadow justify-center items-center flex"
+                        onClick={addFile}
+                        className="p-2 border rounded-md bg-blue-500 text-white my-auto "
                       >
-                        <div className="text-white text-sm font-medium leading-tight">
-                          Proceed To Pay
-                        </div>
+                        Add File
                       </button>
                     </div>
                   </div>
