@@ -27,7 +27,7 @@ export default function Sidebar({ isNavOpen }: any) {
                 <div className="flex-col justify-center items-center gap-2 inline-flex">
                   <img
                     className="w-[100px] h-[100px] rounded-[100px]"
-                    src={user?.image}
+                    // src={user.image}
                     alt="Profile"
                   />
                   <div className="flex-col justify-center items-center flex">
@@ -69,7 +69,8 @@ export default function Sidebar({ isNavOpen }: any) {
                   </div>
                 </div>
               </div>
-              {user?.role?.code == "admin" ? (
+              {/* {user?.role?.code == "admin" ? ( */}
+              {"admin" == "admin" ? (
                 <div className="w-full justify-start items-start inline-flex">
                   <div className="w-full self-stretch p-4 pr-8 hover:bg-violet-200 rounded-md justify-between items-center gap-[105px] flex">
                     <div className="grow shrink basis-0 h-6 justify-start items-center gap-3 flex">

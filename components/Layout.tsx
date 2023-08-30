@@ -12,7 +12,7 @@ export default function Layout({ children }: any) {
   const router = useRouter();
   const session = useSession();
   const user = session?.data?.user;
-  console.log(user?.role?.code);
+  // console.log(user?.role?.code);
 
   return (
     <div>
