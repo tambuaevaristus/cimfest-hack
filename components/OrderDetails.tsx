@@ -1,9 +1,6 @@
 import React from "react";
 
-export default function OrderDetails({ order}) {
-  
-  console.log("order content==>",order);
-  
+export default function OrderDetails({ order }: any) {
   return (
     <div>
       <div className="px-4 pt-2 pb-4 bg-violet-100 rounded-tl-md rounded-tr-md border-b border-gray-700 justify-start items-center  inline-flex">
