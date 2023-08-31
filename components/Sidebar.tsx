@@ -133,6 +133,7 @@ export default function Sidebar({ isNavOpen }: any) {
                   </div>
                 </div>
               </div>
+              {/* comment */}
             </div>
           </div>
         </div>
