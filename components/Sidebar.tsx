@@ -110,7 +110,8 @@ export default function Sidebar({ isNavOpen }: any) {
                 </div>
               </div>
               {/* sidebar issues */}
-              {/* sidebar */}
+              {/* sidebar*/}
+
               <div className="justify-start items-start inline-flex">
                 <div className="self-stretch p-4 rounded-md justify-between items-center gap-[105px] flex">
                   <div className="grow shrink basis-0 h-6 justify-start items-center gap-3 flex">
