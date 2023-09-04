@@ -19,7 +19,7 @@ export default function FileUpload({url}: any) {
         ) : (
           <div
           >
-            Preview Area
+            Preview Area Here
           </div>
         )}
       </div>
