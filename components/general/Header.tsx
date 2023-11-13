@@ -23,10 +23,10 @@ export default function Header() {
           </button>
         </div>
         <div>
-          <button className="text-xs text-white bg-gray-500 rounded-full p-px pr-3">
+          <button className="text-xs text-white flex items-center bg-gray-500 rounded-full p-px pr-3">
             <img
-              src=""
-              className="w-7 h-7 inline-block rounded-full mr-2"
+              src="/person.png"
+              className="w-7 h-7 object-cover rounded-full mr-2"
             />
             Tambua Evaristus
           </button>
