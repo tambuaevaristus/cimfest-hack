@@ -74,8 +74,8 @@ export const PlayerControls = ({
     playPauseButtonRef.current?.focus();
   }, []);
   return (
-    <div className=" rounded-b-xl w-full py-10">
-      <div className="flex gap-3 justify-center items-center ">
+    <div className=" rounded-b-xl w-full">
+      <div className="flex gap-5 justify-center items-center ">
         {/* loop button */}
         <div className="flex justify-center">
           <button
@@ -92,7 +92,7 @@ export const PlayerControls = ({
         <div className="flex justify-center">
           <button
             ref={playPauseButtonRef}
-            className="focus:outline rounded-md p-4 hover:text-white/60"
+            className="border rounded-md p-4 hover:text-white/60"
             onClick={togglePlayAndPause}
           >
             {playing ? <CiPause1 /> : <CiPlay1 />}
@@ -112,7 +112,7 @@ export const PlayerControls = ({
           {/* volume slider */}
           <input
             type="range"
-            className=" w-[50%] h-2 rounded-lg  bg-slate-400 accent-gray-900"
+            className=" w-full h-2 rounded-lg  bg-slate-400 accent-gray-900"
             min={0}
             max={1}
             step={0.1}
