@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 interface Prop {
@@ -6,9 +7,11 @@ interface Prop {
 export default function Story({ img }: Prop) {
   return (
     <div>
-      <div className="rounded-full overflow-hidden border-red-500  border-2 bg w-[100px] h-[100px]">
-        <img src={img} alt="" />
-      </div>
+      <Link href="/story">
+        <div className="rounded-full hover:border-red-500 overflow-hidden border-yellow-500  border-2 hover:border-4 bg w-[80px] h-[80px]">
+          <img src={img} alt="" />
+        </div>
+      </Link>
     </div>
   );
 }

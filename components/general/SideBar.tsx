@@ -2,7 +2,7 @@ import React from "react";
 
 export default function SideBar() {
   return (
-    <nav className="col-span-1 row-span-3 bg-gray-700 pt-6 h-full">
+    <nav className=" bg-gray-700 pt-6 h-full">
       <div className="px-6 mb-6">
         <h1 className="text-white font-serif text-lg">MuTumBu</h1>
       </div>
