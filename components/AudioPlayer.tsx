@@ -61,7 +61,7 @@ export const AudioPlayer = ({ url, title, author, thumbnail }: Props) => {
 
   return (
 
-    <div className="fixed backdrop-blur-2xl bottom-0 left-0 w-full z-30">
+    <div className="fixed backdrop-blur-3xl bottom-0 left-0 w-full z-30">
       <div className="hidden">
       <ReactPlayer
         ref={playerRef}
@@ -76,7 +76,7 @@ export const AudioPlayer = ({ url, title, author, thumbnail }: Props) => {
         onDuration={handleDuration}
       />
 </div>
-      <div className="shadow bg-white/10 flex w-full">
+      <div className="shadow bg-white/5 items-center p-2 flex w-full">
         <AudioDetails
           title={String(title)}
           author={String(author)}

@@ -7,7 +7,7 @@ type Props = {
 };
 export const AudioDetails = ({ title, author, thumbnail }: Props) => {
   return (
-    <div className="rounded-t-xl px-5 py-8">
+    <div className="rounded-t-xl w-full max-w-[320px]">
       <div className="flex space-x-4">
           <img
             src={thumbnail}

@@ -1,4 +1,6 @@
 import React from "react";
+import { CiPlay1 } from "react-icons/ci";
+import { ImPlay } from "react-icons/im";
 interface Props {
   image: string;
   title: string;
@@ -7,11 +9,17 @@ interface Props {
 export default function MusicCard({ image, title }: Props) {
   return (
     <div className="rounded-lg max-w-[250px] min-w-[250px] hover:bg-white/5 cursor-pointer duration-150 p-2">
-      <img
-        className=" w-full hover:scale-95 h-[250px] duration-150 object-cover rounded-xl inset-0"
+      <div className="relative card">
+        <img
+        className="image w-full hover:scale-95 h-[250px] duration-150 object-cover rounded-xl inset-0"
         src={image}
         alt=""
       />
+      <div className="w-full top-0 over opacity-0 left-0 rounded-xl absolute h-full bg-black/50 flex items-center justify-center">
+        <CiPlay1 className="bg-white w-10 h-10 p-2 rounded-full" />
+      </div>
+      </div>
+      
       <div className="text-center text-white text-line-clamp-1  mb-1 block">
         {title}
       </div>
