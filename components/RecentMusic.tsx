@@ -24,8 +24,7 @@ export default function RecentMusic() {
           </a>
         </div>
       </div>
-      <div className="grid  grid-cols-1 sm:grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
-        {" "}
+      <div className="flex gap-3 overflow-scroll">
         <MusicCard
           image="https://picsum.photos/129.webp?random=1"
           title="Afro gospel"

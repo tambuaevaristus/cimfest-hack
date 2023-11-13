@@ -130,4 +130,16 @@ body{
     word-break: break-all;
       overflow: hidden;
   }
-  
+  @layer components{
+    .input-validated {
+   @apply h-[56px] w-full rounded-xl px-[16px] text-[24px] py-[8px] text-white/90 sm:w-[330px];
+ }
+ .input-validated > * {
+   @apply bg-transparent placeholder:text-white/10 outline-none;
+ }
+ .otp > input {
+  @apply bg-transparent outline-none;
+} .code > div {
+  @apply flex justify-center;
+}
+ }
