@@ -4,7 +4,7 @@ export default function SideBar() {
   return (
     <nav className=" bg-gray-700 pt-6 h-full">
       <div className="px-6 mb-6">
-        <h1 className="text-white font-serif text-lg">MuTumBu</h1>
+        <img src="/logo.png" />
       </div>
       <div className="px-2 mb-6">
         <div className="bg-gray-200 flex font-medium items-center px-4 py-2 rounded text-sm text-white">
@@ -51,14 +51,14 @@ export default function SideBar() {
               fill="currentColor"
             ></path>
           </svg>
-          Your Library
+          For You
         </div>
       </div>
       <div>
         <h3 className="text-xs text-gray-100 uppercase text-white px-6 tracking-widest font-light mb-4">
-          Playlists
+          Feature
         </h3>
-        {/* <div className="mb-3">
+        <div className="mb-3">
           <div className="px-6 py-1 flex items-center text-sm text-white opacity-50 hover:opacity-100">
             <svg
               className="bg-white fill-current h-8 mr-4 p-1 text-black w-8"
@@ -76,17 +76,17 @@ export default function SideBar() {
             >
               <path d="M10 3.22l-.61-.6a5.5 5.5 0 0 0-7.78 7.77L10 18.78l8.39-8.4a5.5 5.5 0 0 0-7.78-7.77l-.61.61z" />
             </svg>
-            Liked Songs
+            Trending
           </div>
-        </div> */}
+        </div>
         <hr className="border-gray-200 mx-6 mb-3" />
         <div>
-          <div className="px-6 py-2 flex items-center text-sm text-white text-gray-100 hover:text-white">
+          {/* <div className="px-6 py-2 flex items-center text-sm text-white text-gray-100 hover:text-white">
             Liked from Radio
           </div>
           <div className="px-6 py-2 flex items-center text-sm text-white text-gray-100 hover:text-white">
             Discover Weekly
-          </div>
+          </div> */}
         </div>
       </div>
     </nav>
