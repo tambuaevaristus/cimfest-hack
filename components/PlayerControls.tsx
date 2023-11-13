@@ -74,7 +74,7 @@ export const PlayerControls = ({
     playPauseButtonRef.current?.focus();
   }, []);
   return (
-    <div className=" rounded-b-xl w-full">
+    <div className="text-white flex flex-col gap-2 rounded-b-xl w-full">
       <div className="flex gap-5 justify-center items-center ">
         {/* loop button */}
         <div className="flex justify-center">
@@ -102,10 +102,7 @@ export const PlayerControls = ({
         {/* volume control */}
         <div className="flex justify-center items-center gap-1">
           {/* mute button */}
-          <button
-            className=" hover:text-white/50"
-            onClick={toggleMute}
-          >
+          <button className=" hover:text-white/50" onClick={toggleMute}>
             {muted ? <VscMute /> : <VscUnmute />}
           </button>
 

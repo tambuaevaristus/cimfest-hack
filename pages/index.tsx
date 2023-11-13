@@ -7,7 +7,7 @@ import Stories from "@/components/Stories";
 // import Banner from "@/components/general/Banner";
 import Header from "@/components/general/Header";
 import SideBar from "@/components/general/SideBar";
-import React from "react";
+import React, { useState } from "react";
 
 const audio = {
   url: "https://storage.googleapis.com/media-session/elephants-dream/the-wires.mp3",
@@ -17,29 +17,35 @@ const audio = {
 };
 
 export default function Home() {
+  const [playTrack, setPlayTrack] = useState(false);
   return (
-    <div className="">
-      <div className="w-full h-full flex">
-        <div className="w-1/6">
-          {" "}
+    <div className="mx-auto w-full">
+      <div className="w-full mx-auto h-full flex max-w-[1900px]">
+        <div className="w-1/6 sticky h-screen">
           <SideBar />
         </div>
 
-        <main className=" mb-20 mt-10 mx-auto w-4/6">
-          {/* <Header /> */}
+        <main className="h-screen overflow-scroll mx-auto w-full px-10">
+          <div className="h-full w-full max-w-[1300px]">
+          <Header />
           <Stories />
           {/* <Banner /> */}
-          <img src="/images/banner.jpg" className="w-full rounded-lg h-[400px] mb-10 " />
+          <img
+            src="/images/banner.jpg"
+            className="w-full rounded-lg object-cover h-[400px] mb-10 "
+          />
           <RecentMusic />
-          <LocalMusics />
+          <LocalMusics /></div>
         </main>
       </div>
-      <AudioPlayer
-        url={audio.url}
-        title={audio.title}
-        author={audio.author}
-        thumbnail={audio.thumbnail}
-      />
+      {playTrack && (
+        <AudioPlayer
+          url={audio.url}
+          title={audio.title}
+          author={audio.author}
+          thumbnail={audio.thumbnail}
+        />
+      )}
       {/* <Player /> */}
     </div>
   );

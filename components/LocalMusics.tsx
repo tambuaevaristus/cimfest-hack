@@ -3,7 +3,7 @@ import MusicCard from "./MusicCard";
 
 export default function LocalMusics() {
   return (
-    <section className="px-6 grid gap-6 mb-8">
+    <section className="grid gap-6 mb-8">
       <div className="flex items-center">
         <div className="flex-1">
           <h3 className="text-2xl text-white">

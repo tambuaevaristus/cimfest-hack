@@ -3,7 +3,7 @@ import React from "react";
 export default function Header() {
   return (
     
-      <header className="px-6 py-4 mb-6 bg-gray-600 flex items-center justify-between sticky top-0 z-10">
+      <header className="py-4 mb-6 bg-gray-600 flex items-center justify-between sticky top-0 z-10">
         <div className="flex items-center">
           <button className="h-8 w-8 bg-gray-500 rounded-full text-white flex mr-4 opacity-50 cursor-not-allowed">
             <svg className="h-5 w-5 m-auto" viewBox="0 0 24 24">
