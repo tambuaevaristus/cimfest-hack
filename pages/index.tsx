@@ -8,6 +8,7 @@ import Stories from "@/components/Stories";
 import Header from "@/components/general/Header";
 import SideBar from "@/components/general/SideBar";
 import React, { useState } from "react";
+import songs from "@/songs";
 
 const audio = {
   url: "https://storage.googleapis.com/media-session/elephants-dream/the-wires.mp3",
@@ -17,7 +18,8 @@ const audio = {
 };
 
 export default function Home() {
-  const [playTrack, setPlayTrack] = useState(false);
+  const [playing, setPlaying] = useState();
+  const [songList, setSongList] = useState(songs);
   return (
     <div className="mx-auto w-full">
       <div className="w-full mx-auto h-full flex max-w-[1900px]">
@@ -27,23 +29,24 @@ export default function Home() {
 
         <main className="h-screen overflow-scroll mx-auto w-full px-10">
           <div className="h-full w-full max-w-[1300px]">
-          <Header />
-          <Stories />
-          {/* <Banner /> */}
-          <img
-            src="/images/banner.jpg"
-            className="w-full rounded-lg object-cover h-[400px] mb-10 "
-          />
-          <RecentMusic />
-          <LocalMusics /></div>
+            <Header />
+            <Stories />
+            {/* <Banner /> */}
+            <img
+              src="/images/banner.jpg"
+              className="w-full rounded-xl object-cover h-[400px] mb-10 "
+            />
+            <RecentMusic setPlaying={setPlaying} songs={songList} />
+            <LocalMusics setPlaying={setPlaying} songs={songList} />
+          </div>
         </main>
       </div>
-      {playTrack && (
+      {playing != undefined && (
         <AudioPlayer
-          url={audio.url}
-          title={audio.title}
-          author={audio.author}
-          thumbnail={audio.thumbnail}
+          url={playing?.url}
+          title={playing?.title}
+          author={playing?.author}
+          thumbnail={playing?.thumbnail}
         />
       )}
       {/* <Player /> */}

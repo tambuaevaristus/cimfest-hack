@@ -19,7 +19,7 @@ export default function SideBar() {
         </div>
         <div className="flex font-medium hover:bg-white/5 items-center gap-4 px-4 py-3 cursor-pointer duration-150 rounded text-sm text-gray-100 hover:text-white">
           <ImBooks className="h-6 w-6" />
-          For You
+          Downloads
         </div>
       </div>
       <div>

@@ -12,9 +12,7 @@ export const AudioDetails = ({ title, author, thumbnail }: Props) => {
           <img
             src={thumbnail}
             alt=""
-            width="150"
-            height="150"
-            className="flex-none rounded-lg bg-gray-100"
+            className="flex-none object-cover w-24 h-24 rounded-lg bg-gray-100"
           />
 
         <div className="flex flex-col gap-2 justify-start">
