@@ -2,7 +2,7 @@ import React from "react";
 
 export default function MusicCard() {
   return (
-    <div className="bg-gray-200 rounded-lg p-5">
+    <div className="bg-gray-200 rounded-lg p-2">
       <div className="relative pt-full mb-4">
         <img
           className="block w-full absolute inset-0"

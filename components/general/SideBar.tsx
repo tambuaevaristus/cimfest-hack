@@ -2,9 +2,9 @@ import React from "react";
 
 export default function SideBar() {
   return (
-    <nav className="col-span-1 row-span-3 bg-gray-700 pt-6">
+    <nav className="col-span-1 row-span-3 bg-gray-700 pt-6 hidden">
       <div className="px-6 mb-6">
-        <h1 className="text-white font-serif text-lg">Hack O' Holic</h1>
+        <h1 className="text-white font-serif text-lg">Hack O Holic</h1>
       </div>
       <div className="px-2 mb-6">
         <div className="bg-gray-200 flex font-medium items-center px-4 py-2 rounded text-sm text-white">
