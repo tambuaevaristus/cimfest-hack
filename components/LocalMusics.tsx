@@ -26,7 +26,7 @@ export default function LocalMusics({ songs, setPlaying }: any) {
         </div>
       </div>
       <div className="flex gap-3 example overflow-scroll">
-        {songz.map((elem: any, index: any) => (
+        {songz.filter((song:any)=>song.local).map((elem: any, index: any) => (
           <MusicCard
             onClick={() => {
               setPlaying({
@@ -39,6 +39,7 @@ export default function LocalMusics({ songs, setPlaying }: any) {
             key={index}
             image={elem?.image}
             title={elem?.title}
+            local={elem?.local}
           />
         ))}
       </div>

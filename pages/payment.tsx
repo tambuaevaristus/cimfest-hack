@@ -6,7 +6,7 @@ import { E164Number } from "libphonenumber-js/min";
 
 const PaymentScreen = () => {
   const router = useRouter();
-  const [tab, setTab] = useState("done");
+  const [tab, setTab] = useState("details");
   const [phoneNumber, setPhoneNumber] = useState<E164Number | undefined>("");
   return (
     <div className="w-full h-screen flex items-center justify-center p-4">
@@ -45,7 +45,9 @@ const PaymentScreen = () => {
         </div>
         {tab == "details" && (
           <div className=" flex flex-col gap-2">
-            <div className="text-white pt-3">We only accept mobile money payments for now.</div>
+            <div className="text-white pt-3">
+              We only accept mobile money payments for now.
+            </div>
             <div className="py-2 flex gap-2">
               <div className="p-2 rounded-xl">
                 <img
@@ -95,7 +97,14 @@ const PaymentScreen = () => {
               />
             </svg>
             <div className="flex gap-3">
-                <button className="p-4 px-8 hover:bg-white/5 duration-100 bg-white/10 text-sm rounded-xl">Back to playlist</button>
+              <button
+                onClick={() => {
+                  router.back();
+                }}
+                className="p-4 px-8 hover:bg-white/5 duration-100 bg-white/10 text-sm rounded-xl"
+              >
+                Back to playlist
+              </button>
             </div>
           </div>
         )}
@@ -107,7 +116,15 @@ const PaymentScreen = () => {
         )}
         {tab == "details" && (
           <div className="w-full mt-auto flex justify-end">
-            <button className="bg-white/10 hover:bg-white/20 rounded-xl text-white p-2  px-9 py-3">
+            <button
+              onClick={() => {
+                setTab("processing");
+                setTimeout(() => {
+                  setTab("done");
+                }, 4000);
+              }}
+              className="bg-white/10 hover:bg-white/20 rounded-xl text-white p-2  px-9 py-3"
+            >
               Pay
             </button>
           </div>
