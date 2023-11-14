@@ -86,7 +86,7 @@ const AuthScreen = () => {
             setLoading(true);
             signIn().then(() => {
               setLoading(false);
-              router.push("/")
+              router.push("/?tab=home")
             });
           }}
           className="rounded-xl cursor-pointer bg-white/5 hover:bg-white/10 duration-100 flex justify-center items-center gap-3 border-white/10 p-3"

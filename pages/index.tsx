@@ -52,11 +52,14 @@ export default function Home() {
               <Header />
               <div className="flex gap-3">
                 <div className="w-[250px] flex flex-col h-[300px] overflow-hidden rounded-xl bg-white/10">
-                  <div className="font-bold text-3xl w-full p-5 text-center py-10 text-white">
+                  <div className="font-bold text-3xl flex flex-col gap-3 w-full p-5 text-center py-10 text-white">
                     Free
-                    <div className="text-xs font-thin flex flex-col gap-2 border border-white/5 rounded-md p-2">
-                      <div>unlimited access for 1 month</div>
-                      <div>Can only download Cameroonian songs</div>
+                    <div className="text-xs">
+                      0 <span>XAF / Mon</span>
+                    </div>
+                    <div className="text-xs text-left font-thin flex flex-col gap-2 border border-white/5 rounded-md p-2">
+                      <div>- unlimited access for 1 month</div>
+                      <div>- Can only download Cameroonian songs</div>
                     </div>
                   </div>
                   {selected != "one" && (
@@ -72,11 +75,14 @@ export default function Home() {
                   )}
                 </div>
                 <div className="w-[250px] flex flex-col h-[300px] overflow-hidden rounded-xl bg-white/10">
-                  <div className="font-bold text-3xl w-full p-5 text-center py-10 text-white">
-                    3,000 <span className="text-xs">XAF / Mon</span>
-                    <div className="text-xs font-thin flex flex-col gap-2 border border-white/5 rounded-md p-2">
-                      <div>unlimited access for 1 month</div>
-                      <div>Can only download Cameroonian songs</div>
+                  <div className="font-bold text-3xl flex flex-col gap-3 w-full p-5 text-center py-10 text-white">
+                    <div>Basic</div>
+                    <div className="text-xs">
+                      650 <span>XAF / Mon</span>
+                    </div>
+                    <div className="text-xs text-left font-thin flex flex-col gap-2 border border-white/5 rounded-md p-2">
+                      <div>- unlimited access for 1 month</div>
+                      <div>- Can download all songs</div>
                     </div>
                   </div>
                   {selected != "two" && (
@@ -92,11 +98,14 @@ export default function Home() {
                   )}
                 </div>
                 <div className="w-[250px] flex flex-col h-[300px] overflow-hidden rounded-xl bg-white/10">
-                  <div className="font-bold text-3xl w-full p-5 text-center py-10 text-white">
-                    5,000 <span className="text-xs">XAF / Mon</span>
-                    <div className="text-xs font-thin flex flex-col gap-2 border border-white/5 rounded-md p-2">
-                      <div>unlimited access for 1 month</div>
-                      <div>Can only download Cameroonian songs</div>
+                  <div className="font-bold text-3xl flex flex-col gap-3 w-full p-5 text-center py-10 text-white">
+                    <div>Premium</div>
+                    <div className="text-xs">
+                      1,150 <span>XAF / Mon</span>
+                    </div>
+                    <div className="text-xs font-thin text-left flex flex-col gap-2 border border-white/5 rounded-md p-2">
+                      <div>- unlimited access for 1 month</div>
+                      <div>- Can only download Cameroonian songs</div>
                     </div>
                   </div>
                   {selected != "three" && (
