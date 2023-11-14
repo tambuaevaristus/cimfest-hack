@@ -17,7 +17,7 @@ export default function Stories() {
             </h3>
           </div>
         </div>
-        <div className="flex overflow-scroll gap-2">
+        <div className="flex overflow-scroll example gap-2">
           <Story img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSjRsgu9ZsQh7J4IoAlbFMvB_BXvnpbSCo9Q&usqp=CAU" />
 
           <Story img="https://visartculture.com/wp-content/uploads/2019/05/fb_img_1557352576296.jpg" />

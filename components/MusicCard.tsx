@@ -31,9 +31,9 @@ export default function MusicCard({ image, title, onClick }: Props) {
         {title}
       </div>
       <div className=" pb-5">
-        <span className="text-xs text-center text-gray-100 text-line-clamp-1">
+        {/* <span className="text-xs text-center text-gray-100 text-line-clamp-1">
           By Big G Baba
-        </span>
+        </span> */}
         {/* <button className="absolute right-0 top-0 w-10 h-10 bg-green-200 rounded-full text-white">
           <svg
             className="fill-current h-5 w-5 m-auto"

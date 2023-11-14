@@ -1,5 +1,5 @@
 import React from "react";
-import { CiHome } from "react-icons/ci";
+import { CiHome, CiMoneyBill, CiMoneyCheck1 } from "react-icons/ci";
 import { ImBooks, ImHome, ImLibrary, ImSearch } from "react-icons/im";
 
 export default function SideBar() {
@@ -48,6 +48,12 @@ export default function SideBar() {
           </div>
         </div>
         <hr className="border-gray-200 mx-6 mb-3" />
+        <div className="mb-3">
+          <div className="px-6 hover:bg-white/5 py-2 gap-3 cursor-pointer flex items-center text-sm text-white opacity-50 hover:opacity-100">
+            <CiMoneyCheck1 className="h-9 w-9"  />
+            Pricing
+          </div>
+        </div>
         <div>
           {/* <div className="px-6 py-2 flex items-center text-sm text-white text-gray-100 hover:text-white">
             Liked from Radio

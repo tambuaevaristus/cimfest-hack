@@ -24,7 +24,7 @@ export default function RecentMusic({ songs,setPlaying }: any) {
           </a>
         </div>
       </div>
-      <div className="flex gap-3 overflow-scroll">
+      <div className="flex gap-3 example overflow-scroll">
         {songs.slice(5).map((elem: any, index: any) => (
           <MusicCard key={index} image={elem?.image} title={elem?.title} />
         ))}
