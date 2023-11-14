@@ -4,7 +4,7 @@ import { ImBooks, ImHome, ImLibrary, ImSearch } from "react-icons/im";
 
 export default function SideBar() {
   return (
-    <nav className=" bg-gray-700 pt-6 h-full">
+    <nav className=" bg-gray-700 pt-6 h-full hidden md:block">
       <div className="mx-auto my-6 cursor-pointer pb-5">
         <img src="/icon.png" className="mx-auto w-32" />
       </div>
