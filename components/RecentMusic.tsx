@@ -1,7 +1,7 @@
 import React from "react";
 import MusicCard from "./MusicCard";
 
-export default function RecentMusic({ songs,setPlaying }: any) {
+export default function RecentMusic({ songs, setPlaying }: any) {
   return (
     <section className="grid gap-6 mb-8">
       <div className="flex items-center">
@@ -25,8 +25,21 @@ export default function RecentMusic({ songs,setPlaying }: any) {
         </div>
       </div>
       <div className="flex gap-3 example overflow-scroll">
-        {songs?.slice(5).map((elem: any, index: any) => (
-          <MusicCard key={index} image={elem?.image} title={elem?.title} />
+        {songs.slice(5).map((elem: any, index: any) => (
+          <MusicCard
+            onClick={() => {
+              setPlaying({
+                url: elem?.url,
+                title: elem?.title,
+                author: elem?.artist,
+                thumbnail: elem?.image,
+              });
+            }}
+            key={index}
+            image={elem?.image}
+            title={elem?.title}
+            local={elem?.local}
+          />
         ))}
       </div>
     </section>

@@ -13,7 +13,7 @@ export async function signIn() {
         const user = result.user;
         displayNotification("success","Successfully signed in.",4000,"dark")
         setTimeout(()=>{
-            window.location.href = "/"
+            window.location.href = "/?tab=home"
         },2000)
         // IdP data available using getAdditionalUserInfo(result)
         // ...
