@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { CiHome, CiMoneyBill, CiMoneyCheck1 } from "react-icons/ci";
@@ -76,6 +77,7 @@ export default function SideBar() {
         </div>
         <hr className="border-gray-200 mx-6 mb-3" />
         <div className="mb-3">
+          <Link href="/payment">
           <div
             onClick={() => {
               router.push("?tab=pricing");
