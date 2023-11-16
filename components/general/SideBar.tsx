@@ -77,7 +77,6 @@ export default function SideBar() {
         </div>
         <hr className="border-gray-200 mx-6 mb-3" />
         <div className="mb-3">
-          <Link href="/payment">
           <div
             onClick={() => {
               router.push("?tab=pricing");
@@ -87,7 +86,6 @@ export default function SideBar() {
             <CiMoneyCheck1 className="h-9 w-9" />
             Pricing
           </div>
-         </Link>
         </div>
         <div>
           {/* <div className="px-6 py-2 flex items-center text-sm text-white text-gray-100 hover:text-white">
